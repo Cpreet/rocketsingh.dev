@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>rckt.dev — Get unstuck</title>
+  <meta name="description" content="A scrapbook-style question desk prototype for rckt.dev." />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="shell nav">
+      <a href="#" class="brand" aria-label="rckt.dev home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>rckt.dev</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#questions">Things we solve</a>
+        <a href="#recipe">A sample answer</a>
+        <a href="#ask" class="mini-cta">Ask rckt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <span class="eyebrow">The little question desk on the internet</span>
+          <h1 id="hero-title">Got stuck?<br><span class="scribble">Bring it here.</span></h1>
+          <p>
+            Tell us what you are trying to get done. We turn the confusing bit into a clear,
+            practical path you can actually follow.
+          </p>
+        </div>
+
+        <div class="avatar-wrap" aria-hidden="true">
+          <img src="assets/avatar.png" alt="" />
+        </div>
+
+        <form class="ask-card" id="ask" onsubmit="return submitAsk(event)">
+          <div class="ask-label">
+            <strong>What are you trying to get done?</strong>
+            <span>NO JARGON REQUIRED</span>
+          </div>
+          <textarea
+            id="question"
+            aria-label="Describe what you are trying to get done"
+            placeholder="My printer won't connect to my laptop..."
+          ></textarea>
+          <div class="ask-actions">
+            <button class="chip" type="button" onclick="fakeAttach('Screenshot')">＋ Screenshot</button>
+            <button class="chip" type="button" onclick="fakeAttach('File')">＋ File</button>
+            <button class="button" type="submit">Get me unstuck →</button>
+          </div>
+          <div class="channel-row" aria-label="Alternative contact methods">
+            <span>Prefer another place?</span>
+            <a href="#">WhatsApp</a>
+            <a href="#">Telegram</a>
+            <a href="#">Email</a>
+          </div>
+        </form>
+      </section>
+
+      <section class="section" id="how">
+        <div class="section-head">
+          <h2>A desk for the<br>awkward little things.</h2>
+          <p>
+            Questions, diagnosis, forms, setup, eligibility, tech chores — whatever the shape,
+            the goal is the same: turn “I’m stuck” into “done”.
+          </p>
+        </div>
+
+        <div class="steps">
+          <article class="paper-card">
+            <span class="step-no">01 / ASK</span>
+            <h3>Show us the snag.</h3>
+            <p>Write it badly. Send a screenshot. Drop the file. Start with whatever you know.</p>
+          </article>
+          <article class="paper-card">
+            <span class="step-no">02 / FOLLOW</span>
+            <h3>Get a recipe.</h3>
+            <p>We turn the problem into an end-to-end path with checks, caveats and clear next steps.</p>
+          </article>
+          <article class="paper-card">
+            <span class="step-no">03 / DONE</span>
+            <h3>Finish the job.</h3>
+            <p>Follow it yourself, use a tool when useful, or hand the awkward part back to a human.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="questions">
+        <div class="section-head">
+          <h2>People don’t arrive<br>with neat categories.</h2>
+          <p>
+            Good. Neither does this desk. These are the kinds of real-world questions the interface
+            should make feel perfectly normal to ask.
+          </p>
+        </div>
+
+        <div class="question-wall">
+          <div class="note">“My printer says it’s offline, but it’s right there.”</div>
+          <div class="note">“What am I supposed to write in this field?”</div>
+          <div class="note">“Am I actually eligible for this application?”</div>
+          <div class="note">“Can someone help me move this domain without breaking email?”</div>
+          <div class="note">“This spreadsheet is a mess. I just need the useful bits.”</div>
+          <div class="note">“I clicked something and now the Wi-Fi is gone.”</div>
+        </div>
+      </section>
+
+      <section class="section recipe" id="recipe">
+        <div class="recipe-intro">
+          <span class="eyebrow">Not just an answer</span>
+          <h2>A path you can actually finish.</h2>
+          <p>
+            The useful unit on rckt.dev is a recipe: objective, prerequisites, concrete steps,
+            checkpoints, caveats, and an escalation path when reality disagrees with the instructions.
+          </p>
+        </div>
+
+        <div class="recipe-sheet">
+          <div class="recipe-content">
+            <h3 class="recipe-title">Reconnect a printer to home Wi-Fi</h3>
+            <div class="meta">EST. 8–12 MIN · 3 STEPS · HUMAN-REVIEWABLE</div>
+
+            <label class="check-row">
+              <input class="recipe-check" type="checkbox" />
+              <span>
+                <strong>1. Put the printer into network setup mode</strong>
+                Hold the wireless button until the indicator begins blinking. If it stays solid,
+                stop here — your model may use a different reset sequence.
+              </span>
+            </label>
+
+            <label class="check-row">
+              <input class="recipe-check" type="checkbox" />
+              <span>
+                <strong>2. Join the printer to your Wi-Fi</strong>
+                Use the printer app or control panel to select your network. Keep your Wi-Fi password nearby.
+              </span>
+            </label>
+
+            <label class="check-row">
+              <input class="recipe-check" type="checkbox" />
+              <span>
+                <strong>3. Print a test page from another device</strong>
+                The job is done when another device on the same network can discover and print to it.
+              </span>
+            </label>
+
+            <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+            <div class="progress-label" id="progressLabel">0 of 3 steps complete</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="escalate">
+        <div class="escalate-grid">
+          <div>
+            <span class="eyebrow" style="color:var(--ink); margin-bottom:14px;">WHEN THE RECIPE STOPS MATCHING REALITY</span>
+            <h2>Still stuck? Hand it over.</h2>
+            <p>
+              A real person can review what happened, pick up the context you already shared,
+              and help close the loop instead of making you start again.
+            </p>
+          </div>
+          <a class="button" href="#ask">Create a small help ticket →</a>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-row">
+          <strong>rckt.dev — tiny problems, properly finished.</strong>
+          <span>Prototype concept · scrapbook question desk</span>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
