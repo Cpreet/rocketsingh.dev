@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 
 import avatar from '@/assets/avatar.webp'
+import paperRocket from '@/assets/paper-rocket.svg'
 import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -104,9 +105,11 @@ function Logo() {
       className="inline-flex items-center gap-2.5 rounded-md text-[23px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60"
       aria-label="rckt.dev home"
     >
-      <span
-        className="brand-mark relative size-8 rounded-[50%_50%_44%_56%] bg-navy shadow-[inset_-7px_-7px_0_rgba(255,255,255,0.08)] rotate-[18deg]"
+      <img
+        src={paperRocket}
+        alt=""
         aria-hidden="true"
+        className="size-8 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
       />
       <span>rckt.dev</span>
     </a>

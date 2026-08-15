@@ -170,17 +170,6 @@ a {
   transform: rotate(-2deg);
 }
 
-.brand-mark::after {
-  position: absolute;
-  top: 15px;
-  left: -9px;
-  width: 14px;
-  height: 5px;
-  content: "";
-  border-radius: 999px 2px 2px 999px;
-  background: #d9ad89;
-}
-
 .avatar-mask {
   clip-path: polygon(5% 0, 100% 1%, 96% 100%, 0 98%);
 }
