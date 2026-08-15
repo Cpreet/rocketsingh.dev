@@ -447,7 +447,6 @@ function App() {
             className="hero-panel relative mt-4 overflow-hidden rounded-[24px] border border-ink/10 px-4 pt-16 pb-0 shadow-[0_18px_50px_rgba(35,56,79,0.15)] sm:mt-8 sm:px-8 sm:pt-20 lg:mt-10 lg:min-h-[760px] lg:rounded-[36px] lg:p-0"
             aria-labelledby="hero-title"
           >
-            <div className="absolute top-6 right-[9%] h-9 w-36 -rotate-3 bg-tape/55 shadow-[0_2px_0_rgba(35,56,79,0.08)] sm:w-44" aria-hidden="true" />
             <span className="absolute top-7 left-5 -rotate-6 font-mono text-[11px] font-black tracking-[0.15em] text-ink-soft/75 sm:left-10 lg:top-14 lg:left-12 lg:text-xs">
               ASK HERE →
             </span>
@@ -468,6 +467,10 @@ function App() {
             <IntakeDesk announce={announce} />
 
             <figure className="relative z-0 mx-auto mt-7 h-[255px] w-[270px] overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] sm:h-[330px] sm:w-[360px] lg:absolute lg:right-[-10px] lg:bottom-[-70px] lg:h-auto lg:w-[470px] lg:overflow-visible">
+              <span
+                className="absolute top-3 left-1/2 z-10 h-8 w-32 -translate-x-1/2 -rotate-[3deg] bg-tape/70 shadow-[0_2px_3px_rgba(35,56,79,0.1)] sm:w-40 lg:-top-2"
+                aria-hidden="true"
+              />
               <img
                 className="avatar-mask block w-full rotate-1 rounded-[24px] object-cover object-top"
                 src={avatar}
