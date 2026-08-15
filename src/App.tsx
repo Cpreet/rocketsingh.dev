@@ -98,7 +98,7 @@ const recipeSteps = [
 
 type Notice = { message: string; key: number } | null
 
-function Logo() {
+export function Logo() {
   return (
     <a
       href="#top"
@@ -116,7 +116,7 @@ function Logo() {
   )
 }
 
-function Stamp({ children }: { children: string }) {
+export function Stamp({ children }: { children: string }) {
   return (
     <span className="inline-flex -rotate-[0.5deg] border border-ink/12 bg-paper px-3 py-2 font-mono text-[11px] leading-none font-black tracking-[0.14em] text-ink-soft uppercase shadow-[2px_3px_7px_rgba(35,56,79,0.1)]">
       {children}
@@ -590,6 +590,9 @@ function App() {
                 <button type="button" className="cursor-pointer hover:text-ink" onClick={() => announce('WhatsApp will be available when the live desk opens.')}>
                   <MessageCircle className="mr-1.5 inline size-3.5" aria-hidden="true" /> WhatsApp
                 </button>
+                <a className="hover:text-ink" href="/card">
+                  Business card
+                </a>
                 <span>© 2026 rckt.dev</span>
               </div>
             </div>
