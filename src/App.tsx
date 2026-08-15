@@ -34,46 +34,46 @@ const processSteps = [
     stamp: '01 / ASK',
     title: 'Show us the snag.',
     body: 'Write it badly. Send a screenshot. Drop the file. Start with whatever you know.',
-    rotation: '-rotate-[1.2deg]',
+    rotation: '-rotate-[0.5deg]',
   },
   {
     stamp: '02 / FOLLOW',
     title: 'Get a clear path.',
     body: 'We turn the problem into a practical sequence with checks, caveats and next steps.',
-    rotation: 'rotate-[0.8deg]',
+    rotation: 'rotate-[0.35deg]',
   },
   {
     stamp: '03 / DONE',
     title: 'Finish the job.',
     body: 'Follow it yourself, use a tool, or hand the awkward part to a real person.',
-    rotation: '-rotate-[0.4deg]',
+    rotation: '-rotate-[0.2deg]',
   },
 ]
 
 const questions = [
   {
     text: '“My printer says it’s offline, but it’s right there.”',
-    className: 'bg-[#f4e8a9] -rotate-2 lg:col-span-4',
+    className: 'bg-note-amber -rotate-1 lg:col-span-4',
   },
   {
     text: '“What am I supposed to write in this field?”',
-    className: 'bg-[#d8e6f2] rotate-[1.6deg] lg:col-span-4',
+    className: 'bg-note-sky rotate-[0.8deg] lg:col-span-4',
   },
   {
     text: '“Am I actually eligible for this application?”',
-    className: 'bg-[#f1d8c3] -rotate-[0.7deg] lg:col-span-4',
+    className: 'bg-note-clay -rotate-[0.35deg] lg:col-span-4',
   },
   {
     text: '“Can someone move this domain without breaking email?”',
-    className: 'bg-paper rotate-1 lg:col-span-4 lg:col-start-2',
+    className: 'bg-paper rotate-[0.5deg] lg:col-span-4 lg:col-start-2',
   },
   {
     text: '“This spreadsheet is a mess. I just need the useful bits.”',
-    className: 'bg-[#d9e5c6] -rotate-[1.3deg] lg:col-span-4',
+    className: 'bg-note-sage -rotate-[0.65deg] lg:col-span-4',
   },
   {
     text: '“I clicked something and now the Wi-Fi is gone.”',
-    className: 'bg-[#e3d9ee] rotate-2 lg:col-span-3',
+    className: 'bg-note-lilac rotate-1 lg:col-span-3',
   },
 ]
 
@@ -115,7 +115,7 @@ function Logo() {
 
 function Stamp({ children }: { children: string }) {
   return (
-    <span className="inline-flex -rotate-1 border border-ink/12 bg-paper px-3 py-2 font-mono text-[11px] leading-none font-black tracking-[0.14em] text-ink-soft uppercase shadow-[4px_5px_0_rgba(35,56,79,0.08)]">
+    <span className="inline-flex -rotate-[0.5deg] border border-ink/12 bg-paper px-3 py-2 font-mono text-[11px] leading-none font-black tracking-[0.14em] text-ink-soft uppercase shadow-[2px_3px_7px_rgba(35,56,79,0.1)]">
       {children}
     </span>
   )
@@ -192,7 +192,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   return (
     <form
       id="ask"
-      className="paper-tape relative z-20 mx-auto mt-10 w-full max-w-[650px] -rotate-[0.5deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[11px_13px_0_rgba(35,56,79,0.12),0_24px_55px_rgba(35,56,79,0.19)] sm:p-6 lg:absolute lg:bottom-10 lg:left-10 lg:mx-0 lg:mt-0"
+      className="paper-tape relative z-20 mx-auto mt-10 w-full max-w-[650px] -rotate-[0.25deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.17)] sm:p-6 lg:absolute lg:bottom-10 lg:left-10 lg:mx-0 lg:mt-0"
       onSubmit={handleSubmit}
       noValidate
     >
@@ -223,7 +223,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
       </div>
 
       {error ? (
-        <p id="objective-error" className="mt-2 text-sm font-semibold text-[#9d3e3e]" role="alert">
+        <p id="objective-error" className="mt-2 text-sm font-semibold text-error" role="alert">
           {error}
         </p>
       ) : null}
@@ -347,7 +347,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
         </div>
       </div>
 
-      <div className="recipe-paper relative rotate-[0.45deg] overflow-hidden border border-ink/15 bg-paper p-5 shadow-[11px_13px_0_rgba(35,56,79,0.09)] sm:p-9">
+      <div className="recipe-paper relative rotate-[0.2deg] overflow-hidden border border-ink/15 bg-paper p-5 shadow-[6px_9px_20px_rgba(35,56,79,0.09)] sm:p-9">
         <div className="relative z-10">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -358,7 +358,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
                 Reconnect a printer to home Wi-Fi
               </h3>
             </div>
-            <span className="-rotate-6 border-2 border-navy/55 px-2.5 py-1 font-mono text-[10px] font-black tracking-widest text-navy uppercase">
+            <span className="-rotate-3 border-2 border-navy/55 px-2.5 py-1 font-mono text-[10px] font-black tracking-widest text-navy uppercase">
               Guided
             </span>
           </div>
@@ -447,7 +447,7 @@ function App() {
             className="hero-panel relative mt-4 overflow-hidden rounded-[24px] border border-ink/10 px-4 pt-16 pb-0 shadow-[0_18px_50px_rgba(35,56,79,0.15)] sm:mt-8 sm:px-8 sm:pt-20 lg:mt-10 lg:min-h-[760px] lg:rounded-[36px] lg:p-0"
             aria-labelledby="hero-title"
           >
-            <span className="absolute top-7 left-5 -rotate-6 font-mono text-[11px] font-black tracking-[0.15em] text-ink-soft/75 sm:left-10 lg:top-14 lg:left-12 lg:text-xs">
+            <span className="absolute top-7 left-5 -rotate-3 font-mono text-[11px] font-black tracking-[0.15em] text-ink-soft/75 sm:left-10 lg:top-14 lg:left-12 lg:text-xs">
               ASK HERE →
             </span>
 
@@ -472,7 +472,7 @@ function App() {
                 aria-hidden="true"
               />
               <img
-                className="avatar-mask block w-full rotate-1 rounded-[24px] object-cover object-top"
+                className="avatar-mask block w-full rotate-[0.5deg] rounded-[24px] object-cover object-top"
                 src={avatar}
                 alt="A friendly desk helper holding a certificate"
                 width="760"
@@ -500,7 +500,7 @@ function App() {
                 <article
                   key={step.stamp}
                   className={cn(
-                    'paper-tape relative min-h-60 border border-ink/12 bg-paper px-6 pt-9 pb-7 shadow-[8px_10px_0_rgba(35,56,79,0.08)]',
+                    'paper-tape relative min-h-60 border border-ink/12 bg-paper px-6 pt-9 pb-7 shadow-[4px_6px_16px_rgba(35,56,79,0.09)]',
                     step.rotation,
                   )}
                 >
@@ -529,12 +529,12 @@ function App() {
               </p>
             </div>
 
-            <div className="notice-board mt-9 grid grid-cols-1 gap-5 rounded-2xl border-[8px] border-[#654f40] p-5 shadow-[inset_0_0_0_2px_rgba(255,255,255,0.12),0_18px_50px_rgba(35,56,79,0.15)] sm:grid-cols-2 sm:border-[12px] sm:p-8 lg:grid-cols-12 lg:p-10">
+            <div className="notice-board mt-9 grid grid-cols-1 gap-5 rounded-2xl border-[6px] border-[#6b5645] p-5 shadow-[inset_0_0_0_2px_rgba(255,255,255,0.12),0_16px_40px_rgba(35,56,79,0.14)] sm:grid-cols-2 sm:border-[9px] sm:p-8 lg:grid-cols-12 lg:p-10">
               {questions.map((question) => (
                 <article
                   key={question.text}
                   className={cn(
-                    'pin relative flex min-h-32 items-center border border-ink/8 px-5 pt-7 pb-5 text-[17px] leading-snug font-extrabold tracking-[-0.025em] text-ink shadow-[6px_8px_12px_rgba(51,37,28,0.18)] sm:min-h-40 sm:text-lg',
+                    'pin relative flex min-h-32 items-center rounded-md border border-ink/8 px-5 pt-7 pb-5 text-[17px] leading-snug font-extrabold tracking-[-0.025em] text-ink shadow-[4px_6px_14px_rgba(51,37,28,0.14)] sm:min-h-40 sm:text-lg',
                     question.className,
                   )}
                 >
@@ -550,7 +550,7 @@ function App() {
             <div className="absolute -top-32 -right-20 size-80 rounded-full bg-white/5" aria-hidden="true" />
             <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[1fr_auto]">
               <div>
-                <span className="inline-flex -rotate-1 bg-tape px-3 py-2 font-mono text-[10px] font-black tracking-[0.13em] text-ink uppercase">
+                <span className="inline-flex -rotate-[0.5deg] bg-tape px-3 py-2 font-mono text-[10px] font-black tracking-[0.13em] text-ink uppercase">
                   When the path stops matching reality
                 </span>
                 <h2 className="mt-5 text-[clamp(2.25rem,5vw,3.8rem)] leading-[0.96] font-black tracking-[-0.06em]">

@@ -13,6 +13,12 @@
   --color-tan: #d9ad89;
   --color-tape: #e7cd9c;
   --color-brown: #5b463a;
+  --color-note-amber: #efe4b3;
+  --color-note-sky: #dce7f0;
+  --color-note-clay: #ecdac9;
+  --color-note-sage: #dee4d2;
+  --color-note-lilac: #e2dbe8;
+  --color-error: #9d3e3e;
   --font-sans: Inter, Avenir, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
@@ -101,8 +107,8 @@ a {
   height: 30px;
   content: "";
   background: rgb(231 205 156 / 72%);
-  box-shadow: 0 2px 0 rgb(35 56 79 / 7%);
-  transform: translateX(-50%) rotate(1deg);
+  box-shadow: 0 2px 3px rgb(35 56 79 / 8%);
+  transform: translateX(-50%) rotate(0.5deg);
 }
 
 .scribble {
@@ -151,12 +157,12 @@ a {
   position: absolute;
   top: 9px;
   left: 50%;
-  width: 13px;
-  height: 13px;
+  width: 11px;
+  height: 11px;
   content: "";
   border-radius: 999px;
-  background: #2d4865;
-  box-shadow: 1px 2px 2px rgb(0 0 0 / 27%);
+  background: radial-gradient(circle at 35% 30%, #4a6d8f, #2d4865 65%);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 22%);
   transform: translateX(-50%);
 }
 

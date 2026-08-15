@@ -6,9 +6,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-ink text-white shadow-[4px_5px_0_rgba(35,56,79,0.16)] hover:-translate-y-0.5 hover:bg-navy',
+          'bg-ink text-white shadow-[0_2px_4px_rgba(35,56,79,0.18),3px_5px_10px_rgba(35,56,79,0.14)] hover:-translate-y-0.5 hover:bg-navy hover:shadow-[0_3px_6px_rgba(35,56,79,0.2),4px_7px_14px_rgba(35,56,79,0.16)]',
         paper:
-          'border border-ink/10 bg-paper text-ink shadow-[4px_5px_0_rgba(255,255,255,0.16)] hover:-translate-y-0.5 hover:bg-white',
+          'border border-ink/10 bg-paper text-ink shadow-[3px_4px_10px_rgba(255,255,255,0.14)] hover:-translate-y-0.5 hover:bg-white',
         outline:
           'border border-ink/20 bg-white/50 text-ink hover:-translate-y-0.5 hover:bg-white',
         chip:
