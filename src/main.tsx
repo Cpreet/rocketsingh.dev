@@ -2,9 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import BusinessCard from './BusinessCard.tsx'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// A hand-rolled, dependency-free path switch — the app only has two pages so
+// far. Reach for a router once there's a third or nested/dynamic routes.
+const page = window.location.pathname === '/card' ? <BusinessCard /> : <App />
+
+createRoot(document.getElementById('root')!).render(<StrictMode>{page}</StrictMode>)

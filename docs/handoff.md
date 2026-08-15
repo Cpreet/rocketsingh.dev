@@ -1792,6 +1792,18 @@ Footer
 
 The mobile composition intentionally prioritizes objective → CTA → avatar/context. The supplied avatar has been optimized into a 32 KB WebP derivative.
 
+## Business card route — feature branch
+
+The `feature/business-card` branch adds a compact `/card` route that introduces the product without turning the experience into a generic contact page or task tracker. Its content follows the repository's resolution-first product doctrine:
+
+```text
+ASK   — name the finish
+MOVE  — take one clear next step
+DONE  — verify an observable result
+```
+
+The card keeps the established taped-paper composition and palette. Its compact objective widget carries the visitor's text into the homepage intake at `/#ask`, while WhatsApp, Telegram, Instagram, and email starters provide alternate entry points without presenting channels as the product. The route does not persist objectives or pretend to create a Case before the backend boundary exists.
+
 ## Current service boundary
 
 Homepage submission is routed through a typed `IntakeService` contract and currently reaches a deliberate prototype adapter only. It does **not** create a persistent Case, upload a file, or contact an external channel. This is intentional until deployment, privacy/retention, storage, authentication, and API decisions are made.
