@@ -1,48 +1,78 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
-  BookmarkCheck,
+  BadgeCheck,
   Download,
-  Inbox,
-  Lock,
-  Mail,
-  MessageCircle,
-  PenLine,
-  Send,
+  LockKeyhole,
+  Route,
   Sparkles,
-  Trash2,
+  Target,
+  UserRoundCheck,
   type LucideIcon,
 } from 'lucide-react'
 
 import paperRocket from '@/assets/paper-rocket.svg'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
-import { localTaskTracker, type TrackedTask } from '@/services/taskTracker'
 
 type Notice = { message: string; key: number } | null
 
-const flowSteps: { icon: LucideIcon; label: string; tone: string }[] = [
-  { icon: PenLine, label: 'Type', tone: 'bg-sky-deep text-white' },
-  { icon: BookmarkCheck, label: 'Save', tone: 'bg-tan text-ink' },
-  { icon: Inbox, label: 'Track', tone: 'bg-navy text-white' },
+const resolutionSteps: {
+  icon: LucideIcon
+  stamp: string
+  title: string
+  detail: string
+  tone: string
+}[] = [
+  {
+    icon: Target,
+    stamp: 'ASK',
+    title: 'Name the finish',
+    detail: 'Tell us what you need done.',
+    tone: 'bg-sky-deep text-white',
+  },
+  {
+    icon: Route,
+    stamp: 'MOVE',
+    title: 'Take the next step',
+    detail: 'Get one clear action at a time.',
+    tone: 'bg-tan text-ink',
+  },
+  {
+    icon: BadgeCheck,
+    stamp: 'DONE',
+    title: 'Check it worked',
+    detail: 'Finish with a result you can see.',
+    tone: 'bg-navy text-white',
+  },
 ]
 
-function FlowStep({ icon: Icon, label, tone }: { icon: LucideIcon; label: string; tone: string }) {
+function ResolutionStep({
+  icon: Icon,
+  stamp,
+  title,
+  detail,
+  tone,
+}: (typeof resolutionSteps)[number]) {
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <li className="flex min-w-0 flex-1 flex-col items-center text-center">
       <span
         className={cn(
-          'grid size-10 place-content-center rounded-full shadow-[0_3px_8px_rgba(35,56,79,0.22)] ring-2 ring-white/70',
+          'grid size-10 place-content-center rounded-full shadow-[0_3px_8px_rgba(35,56,79,0.2)] ring-2 ring-white/70',
           tone,
         )}
       >
         <Icon className="size-4" aria-hidden="true" />
       </span>
-      <span className="font-mono text-[9px] font-bold tracking-[0.1em] text-ink-soft uppercase">
-        {label}
+      <span className="mt-2 font-mono text-[9px] font-black tracking-[0.15em] text-ink-soft uppercase">
+        {stamp}
       </span>
-    </div>
+      <span className="mt-1 text-[11px] leading-tight font-extrabold text-ink">{title}</span>
+      <span className="mt-0.5 max-w-[92px] text-[9px] leading-[1.35] font-medium text-ink-soft">
+        {detail}
+      </span>
+    </li>
   )
 }
 
@@ -51,9 +81,9 @@ const VCARD = [
   'VERSION:3.0',
   'FN:rckt.dev',
   'ORG:rckt.dev',
-  'TITLE:The little question desk on the internet',
+  'TITLE:The little resolution desk on the internet',
   'URL:https://rckt.dev',
-  "NOTE:Tell rckt what you're trying to get done — it turns it into a clear, practical path.",
+  "NOTE:Bring the thing you're stuck on. rckt turns it into a clear path to done.",
   'END:VCARD',
   '',
 ].join('\n')
@@ -68,23 +98,8 @@ function saveContact() {
   URL.revokeObjectURL(url)
 }
 
-function formatSubmittedAt(iso: string) {
-  return new Date(iso).toLocaleString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
-}
-
 function BusinessCard() {
-  const [objective, setObjective] = useState('')
-  const [tasks, setTasks] = useState<TrackedTask[]>([])
   const [notice, setNotice] = useState<Notice>(null)
-
-  useEffect(() => {
-    setTasks(localTaskTracker.list())
-  }, [])
 
   useEffect(() => {
     if (!notice) return
@@ -96,32 +111,8 @@ function BusinessCard() {
     setNotice({ message, key: Date.now() })
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const cleaned = objective.trim()
-
-    if (cleaned.length < 5) {
-      announce('Add a little more detail first.')
-      return
-    }
-
-    const task = localTaskTracker.add(cleaned)
-    setTasks((current) => [task, ...current])
-    setObjective('')
-    announce('Saved on this device. Nothing was sent anywhere yet.')
-  }
-
-  function handleRemove(task: TrackedTask) {
-    localTaskTracker.remove(task.id)
-    setTasks((current) => current.filter((item) => item.id !== task.id))
-  }
-
-  function unavailableChannel(channel: string) {
-    announce(`${channel} will be available when the live desk opens.`)
-  }
-
   return (
-    <div className="hero-panel relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-14">
+    <main className="hero-panel relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-16">
       <div className="hero-grid absolute inset-0" aria-hidden="true" />
       <div className="absolute -top-24 -left-24 size-72 rounded-full bg-white/40 blur-3xl" aria-hidden="true" />
       <div className="absolute right-[-4rem] bottom-[-4rem] size-96 rounded-full bg-navy/15 blur-3xl" aria-hidden="true" />
@@ -136,136 +127,101 @@ function BusinessCard() {
         rckt.dev
       </a>
 
-      <div className="relative z-10 w-full max-w-[400px]">
+      <article className="relative z-10 w-full max-w-[410px]" aria-labelledby="card-title">
         <div
           className="absolute inset-0 -z-10 rotate-[2.4deg] rounded-[16px_24px_18px_22px] border border-ink/10 bg-tan/50 shadow-[0_18px_40px_rgba(35,56,79,0.14)]"
           aria-hidden="true"
         />
 
-        <div className="paper-tape relative -rotate-[1.1deg] rounded-[14px_22px_16px_20px] border border-ink/15 bg-paper p-7 shadow-[6px_9px_18px_rgba(35,56,79,0.12),0_26px_54px_rgba(35,56,79,0.2)]">
-        <div className="flex items-center gap-3">
-          <img
-            src={paperRocket}
-            alt=""
-            aria-hidden="true"
-            className="size-9 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
-          />
-          <div className="min-w-0">
-            <p className="text-lg font-black tracking-[-0.045em] text-ink">rckt.dev</p>
-            <p className="truncate font-mono text-[10px] font-bold tracking-[0.12em] text-ink-soft uppercase">
-              The little question desk
+        <div className="paper-tape relative -rotate-[1.1deg] rounded-[14px_22px_16px_20px] border border-ink/15 bg-paper px-7 pt-7 pb-6 shadow-[6px_9px_18px_rgba(35,56,79,0.12),0_26px_54px_rgba(35,56,79,0.2)] sm:px-8">
+          <header className="flex items-center gap-3">
+            <img
+              src={paperRocket}
+              alt=""
+              aria-hidden="true"
+              className="size-9 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
+            />
+            <div className="min-w-0">
+              <p className="text-lg font-black tracking-[-0.045em] text-ink">rckt.dev</p>
+              <p className="font-mono text-[9px] font-bold tracking-[0.13em] text-ink-soft uppercase">
+                The little resolution desk
+              </p>
+            </div>
+          </header>
+
+          <div className="mt-6">
+            <p className="font-mono text-[10px] font-black tracking-[0.16em] text-slate-blue uppercase">
+              Small thing. Stuck?
+            </p>
+            <h1
+              id="card-title"
+              className="mt-2 text-[2rem] leading-[0.98] font-black tracking-[-0.065em] text-ink"
+            >
+              Bring it here.
+              <br />
+              Leave with it <span className="scribble">done.</span>
+            </h1>
+            <p className="mt-3 max-w-[35ch] text-[13px] leading-[1.55] font-medium text-ink-soft">
+              Tell rckt the outcome you need—even if the problem is messy. We’ll turn it into the
+              shortest useful path forward.
             </p>
           </div>
-        </div>
 
-        <div className="mt-5 flex items-center justify-between px-1">
-          {flowSteps.map((step, index) => (
-            <div key={step.label} className="flex items-center gap-2">
-              <FlowStep {...step} />
-              {index < flowSteps.length - 1 ? (
-                <ArrowRight className="size-3.5 shrink-0 text-ink-soft/30" aria-hidden="true" />
-              ) : null}
-            </div>
-          ))}
-        </div>
+          <ol className="mt-6 flex items-start justify-between gap-1" aria-label="How rckt helps">
+            {resolutionSteps.map((step, index) => (
+              <Fragment key={step.stamp}>
+                <ResolutionStep {...step} />
+                {index < resolutionSteps.length - 1 ? (
+                  <ArrowRight className="mt-3 size-3.5 shrink-0 text-ink-soft/30" aria-hidden="true" />
+                ) : null}
+              </Fragment>
+            ))}
+          </ol>
 
-        <form onSubmit={handleSubmit} className="mt-5" noValidate>
-          <label htmlFor="card-objective" className="sr-only">
-            What are you trying to get done?
-          </label>
-          <div className="flex items-center gap-2">
-            <input
-              id="card-objective"
-              type="text"
-              value={objective}
-              onChange={(event) => setObjective(event.target.value)}
-              placeholder="Type what you’re stuck on…"
-              className="h-11 min-w-0 flex-1 rounded-full border border-ink/15 bg-white/70 px-4 text-sm font-semibold text-ink outline-none placeholder:text-slate-blue/75 focus-visible:border-ink/30 focus-visible:ring-3 focus-visible:ring-tan/35"
-            />
-            <Button type="submit" size="icon" aria-label="Save task to tracker">
-              <Send className="size-4" aria-hidden="true" />
-            </Button>
-          </div>
-        </form>
+          <aside className="relative mt-6 overflow-hidden rounded-[10px_14px_9px_12px] border border-ink/10 bg-sky-pale/75 px-4 py-3.5">
+            <span className="absolute top-0 bottom-0 left-0 w-1 bg-tan/80" aria-hidden="true" />
+            <p className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase">
+              Bring the real thing
+            </p>
+            <p className="mt-1.5 text-[11px] leading-[1.5] font-semibold text-ink">
+              A confusing form, a broken device, a stubborn file—or just “this thing isn’t
+              working.”
+            </p>
+          </aside>
 
-        <div className="mt-6 border-t border-ink/10 pt-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-extrabold text-ink">Tracked</h2>
-            <span className="font-mono text-[10px] font-bold tracking-[0.1em] text-ink-soft uppercase">
-              {tasks.length}
-            </span>
-          </div>
-
-          {tasks.length === 0 ? (
-            <div className="mt-3 flex items-center gap-2.5 rounded-lg border border-dashed border-ink/15 bg-white/40 px-3 py-3 text-ink-soft">
-              <Inbox className="size-4 shrink-0" aria-hidden="true" />
-              <span className="text-xs font-semibold">Nothing yet</span>
-            </div>
-          ) : (
-            <ul className="mt-3 max-h-52 space-y-1.5 overflow-y-auto pr-1">
-              {tasks.map((task) => (
-                <li
-                  key={task.id}
-                  className="flex items-start justify-between gap-2 rounded-lg border border-ink/10 bg-white/55 px-3 py-2"
-                >
-                  <div className="min-w-0">
-                    <p className="line-clamp-2 text-xs font-semibold text-ink">{task.objective}</p>
-                    <p className="mt-0.5 font-mono text-[9px] font-bold tracking-[0.06em] text-ink-soft uppercase">
-                      {formatSubmittedAt(task.submittedAt)}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className="grid size-6 shrink-0 cursor-pointer place-content-center rounded-full outline-none hover:bg-ink/8 focus-visible:ring-2 focus-visible:ring-tan"
-                    onClick={() => handleRemove(task)}
-                    aria-label={`Remove "${task.objective}" from your tracker`}
-                  >
-                    <Trash2 className="size-3 text-ink-soft" aria-hidden="true" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <p className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold text-ink-soft/75">
-            <Lock className="size-3 shrink-0" aria-hidden="true" />
-            On this device only
-          </p>
-        </div>
-
-        <div className="mt-5 flex items-center justify-between gap-1 border-t border-ink/10 pt-4">
-          <div className="flex items-center gap-0.5">
-            <button
-              type="button"
-              className="inline-flex cursor-pointer items-center gap-1 rounded-full px-2 py-1.5 text-xs font-semibold text-ink-soft outline-none hover:bg-ink/6 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-              onClick={() => unavailableChannel('Email')}
-            >
-              <Mail className="size-3.5" aria-hidden="true" />
-              Email
-            </button>
-            <button
-              type="button"
-              className="inline-flex cursor-pointer items-center gap-1 rounded-full px-2 py-1.5 text-xs font-semibold text-ink-soft outline-none hover:bg-ink/6 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-              onClick={() => unavailableChannel('WhatsApp')}
-            >
-              <MessageCircle className="size-3.5" aria-hidden="true" />
-              WhatsApp
-            </button>
-          </div>
-          <button
-            type="button"
-            className="inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-ink/6 px-2 py-1.5 text-xs font-semibold text-ink-soft outline-none hover:bg-ink/10 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-            onClick={() => {
-              saveContact()
-              announce('Contact card downloaded.')
-            }}
+          <a
+            href="/#ask"
+            className={cn(buttonVariants({ size: 'lg' }), 'mt-5 w-full rounded-xl')}
           >
-            <Download className="size-3.5" aria-hidden="true" />
-            Save contact
-          </button>
+            Bring me a problem
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </a>
+
+          <div className="mt-4 flex items-center justify-between gap-3 border-t border-ink/10 pt-4">
+            <div className="space-y-1.5">
+              <p className="flex items-center gap-1.5 text-[10px] font-semibold text-ink-soft">
+                <LockKeyhole className="size-3 shrink-0" aria-hidden="true" />
+                Private by default
+              </p>
+              <p className="flex items-center gap-1.5 text-[10px] font-semibold text-ink-soft">
+                <UserRoundCheck className="size-3 shrink-0" aria-hidden="true" />
+                A person can step in
+              </p>
+            </div>
+            <button
+              type="button"
+              className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-ink/6 px-3 py-2 text-[11px] font-bold text-ink-soft outline-none hover:bg-ink/10 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+              onClick={() => {
+                saveContact()
+                announce('rckt.dev saved to your contacts.')
+              }}
+            >
+              <Download className="size-3.5" aria-hidden="true" />
+              Save card
+            </button>
+          </div>
         </div>
-        </div>
-      </div>
+      </article>
 
       <div
         key={notice?.key}
@@ -279,7 +235,7 @@ function BusinessCard() {
         <Sparkles className="size-4 shrink-0 text-tape" aria-hidden="true" />
         {notice?.message}
       </div>
-    </div>
+    </main>
   )
 }
 
