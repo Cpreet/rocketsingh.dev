@@ -1,3 +1,4 @@
+@import "@fontsource-variable/inter/wght.css";
 @import "tailwindcss";
 
 @theme {
@@ -19,7 +20,7 @@
   --color-note-sage: #dee4d2;
   --color-note-lilac: #e2dbe8;
   --color-error: #9d3e3e;
-  --font-sans: Inter, Avenir, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, Avenir, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
@@ -75,6 +76,16 @@ input {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 ::selection {
