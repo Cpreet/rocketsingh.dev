@@ -1,22 +1,20 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
-  Download,
-  LockKeyhole,
+  Camera,
+  Mail,
+  MessageCircle,
   Route,
-  Sparkles,
+  Send,
   Target,
-  UserRoundCheck,
   type LucideIcon,
 } from 'lucide-react'
 
 import paperRocket from '@/assets/paper-rocket.svg'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
-
-type Notice = { message: string; key: number } | null
 
 const resolutionSteps: {
   icon: LucideIcon
@@ -76,40 +74,38 @@ function ResolutionStep({
   )
 }
 
-const VCARD = [
-  'BEGIN:VCARD',
-  'VERSION:3.0',
-  'FN:rckt.dev',
-  'ORG:rckt.dev',
-  'TITLE:The little resolution desk on the internet',
-  'URL:https://rckt.dev',
-  "NOTE:Bring the thing you're stuck on. rckt turns it into a clear path to done.",
-  'END:VCARD',
-  '',
-].join('\n')
+function getContactStarters(objective: string) {
+  const starterMessage = encodeURIComponent(
+    `Hi rckt — I'm trying to get this done: ${objective.trim()}`,
+  )
 
-function saveContact() {
-  const blob = new Blob([VCARD], { type: 'text/vcard' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'rckt.dev.vcf'
-  link.click()
-  URL.revokeObjectURL(url)
+  return [
+    {
+      label: 'WhatsApp',
+      href: `https://wa.me/?text=${starterMessage}`,
+      icon: MessageCircle,
+    },
+    {
+      label: 'Telegram',
+      href: `https://t.me/share/url?url=https%3A%2F%2Frckt.dev&text=${starterMessage}`,
+      icon: Send,
+    },
+    {
+      label: 'Instagram',
+      href: 'https://www.instagram.com/direct/new/',
+      icon: Camera,
+    },
+    {
+      label: 'Email',
+      href: `mailto:?subject=${encodeURIComponent('Help me get this done')}&body=${starterMessage}`,
+      icon: Mail,
+    },
+  ]
 }
 
 function BusinessCard() {
-  const [notice, setNotice] = useState<Notice>(null)
-
-  useEffect(() => {
-    if (!notice) return
-    const timer = window.setTimeout(() => setNotice(null), 3200)
-    return () => window.clearTimeout(timer)
-  }, [notice])
-
-  function announce(message: string) {
-    setNotice({ message, key: Date.now() })
-  }
+  const [objective, setObjective] = useState('')
+  const contactStarters = getContactStarters(objective)
 
   return (
     <main className="hero-panel relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-16">
@@ -178,63 +174,63 @@ function BusinessCard() {
             ))}
           </ol>
 
-          <aside className="relative mt-6 overflow-hidden rounded-[10px_14px_9px_12px] border border-ink/10 bg-sky-pale/75 px-4 py-3.5">
-            <span className="absolute top-0 bottom-0 left-0 w-1 bg-tan/80" aria-hidden="true" />
-            <p className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase">
-              Bring the real thing
-            </p>
-            <p className="mt-1.5 text-[11px] leading-[1.5] font-semibold text-ink">
-              A confusing form, a broken device, a stubborn file—or just “this thing isn’t
-              working.”
-            </p>
-          </aside>
-
-          <a
-            href="/#ask"
-            className={cn(buttonVariants({ size: 'lg' }), 'mt-5 w-full rounded-xl')}
-          >
-            Bring me a problem
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </a>
-
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-ink/10 pt-4">
-            <div className="space-y-1.5">
-              <p className="flex items-center gap-1.5 text-[10px] font-semibold text-ink-soft">
-                <LockKeyhole className="size-3 shrink-0" aria-hidden="true" />
-                Private by default
-              </p>
-              <p className="flex items-center gap-1.5 text-[10px] font-semibold text-ink-soft">
-                <UserRoundCheck className="size-3 shrink-0" aria-hidden="true" />
-                A person can step in
+          <form action="/#ask" method="get" className="mt-6">
+            <label
+              htmlFor="card-objective"
+              className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase"
+            >
+              What do you need to finish?
+            </label>
+            <div className="relative mt-2 overflow-hidden rounded-[10px_14px_9px_12px] border border-ink/10 bg-sky-pale/75 px-4 py-3.5">
+              <span className="absolute top-0 bottom-0 left-0 w-1 bg-tan/80" aria-hidden="true" />
+              <input
+                id="card-objective"
+                name="objective"
+                type="text"
+                required
+                minLength={5}
+                maxLength={500}
+                autoComplete="off"
+                value={objective}
+                onChange={(event) => setObjective(event.target.value)}
+                placeholder="What are you stuck on?"
+                className="h-9 w-full border-0 border-b border-ink/15 bg-transparent px-0 text-[12px] font-semibold text-ink outline-none placeholder:text-slate-blue/80 focus-visible:border-ink/40"
+              />
+              <p className="mt-2 text-[9px] leading-relaxed font-medium text-ink-soft">
+                Start messy. Add screenshots and files at the desk.
               </p>
             </div>
+
             <button
-              type="button"
-              className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-ink/6 px-3 py-2 text-[11px] font-bold text-ink-soft outline-none hover:bg-ink/10 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-              onClick={() => {
-                saveContact()
-                announce('rckt.dev saved to your contacts.')
-              }}
+              type="submit"
+              className={cn(buttonVariants({ size: 'lg' }), 'mt-5 w-full rounded-xl')}
             >
-              <Download className="size-3.5" aria-hidden="true" />
-              Save card
+              Bring me a problem
+              <ArrowRight className="size-4" aria-hidden="true" />
             </button>
-          </div>
+          </form>
+
+          <nav className="mt-4 border-t border-ink/10 pt-4" aria-label="Start in another app">
+            <p className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase">
+              Or start where you already are
+            </p>
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              {contactStarters.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-ink/10 bg-white/55 px-3 py-2 text-[11px] font-bold text-ink-soft outline-none hover:border-ink/20 hover:bg-white hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+                >
+                  <Icon className="size-3.5" aria-hidden="true" />
+                  {label}
+                </a>
+              ))}
+            </div>
+          </nav>
         </div>
       </article>
-
-      <div
-        key={notice?.key}
-        className={cn(
-          'pointer-events-none fixed bottom-5 left-1/2 z-[70] flex w-[min(440px,calc(100%-28px))] -translate-x-1/2 translate-y-3 items-center gap-2.5 rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white opacity-0 shadow-[0_18px_50px_rgba(35,56,79,0.25)] transition-all duration-200',
-          notice && 'translate-y-0 opacity-100',
-        )}
-        role="status"
-        aria-live="polite"
-      >
-        <Sparkles className="size-4 shrink-0 text-tape" aria-hidden="true" />
-        {notice?.message}
-      </div>
     </main>
   )
 }

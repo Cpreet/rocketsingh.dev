@@ -129,7 +129,9 @@ interface IntakeDeskProps {
 }
 
 function IntakeDesk({ announce }: IntakeDeskProps) {
-  const [objective, setObjective] = useState('')
+  const [objective, setObjective] = useState(
+    () => new URLSearchParams(window.location.search).get('objective')?.slice(0, 500) ?? '',
+  )
   const [promptIndex, setPromptIndex] = useState(0)
   const [isFocused, setIsFocused] = useState(false)
   const [files, setFiles] = useState<File[]>([])

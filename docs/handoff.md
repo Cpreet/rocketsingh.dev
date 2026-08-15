@@ -1802,7 +1802,7 @@ MOVE  — take one clear next step
 DONE  — verify an observable result
 ```
 
-The card keeps the established taped-paper composition and palette, links its primary action directly to the homepage intake at `/#ask`, and offers a downloadable vCard as a quiet secondary action. Privacy and human fallback are presented as trust cues. The route does not persist objectives or pretend to create a Case before the backend boundary exists.
+The card keeps the established taped-paper composition and palette. Its compact objective widget carries the visitor's text into the homepage intake at `/#ask`, while WhatsApp, Telegram, Instagram, and email starters provide alternate entry points without presenting channels as the product. The route does not persist objectives or pretend to create a Case before the backend boundary exists.
 
 ## Current service boundary
 
