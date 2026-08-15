@@ -1,31 +1,72 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { ArrowLeft, Clock, Mail, MessageCircle, Send, Sparkles, Trash2 } from 'lucide-react'
+import {
+  ArrowLeft,
+  ChevronDown,
+  Download,
+  Mail,
+  MessageCircle,
+  Send,
+  Sparkles,
+  Trash2,
+} from 'lucide-react'
+import QRCode from 'qrcode'
 
-import { Logo, Stamp } from '@/App'
 import paperRocket from '@/assets/paper-rocket.svg'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { localTaskTracker, type TrackedTask } from '@/services/taskTracker'
 
 type Notice = { message: string; key: number } | null
 
-function formatSubmittedAt(iso: string) {
-  return new Date(iso).toLocaleString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
+const VCARD = [
+  'BEGIN:VCARD',
+  'VERSION:3.0',
+  'FN:rckt.dev',
+  'ORG:rckt.dev',
+  'TITLE:The little question desk on the internet',
+  'URL:https://rckt.dev',
+  "NOTE:Tell rckt what you're trying to get done — it turns it into a clear, practical path.",
+  'END:VCARD',
+  '',
+].join('\n')
+
+function saveContact() {
+  const blob = new Blob([VCARD], { type: 'text/vcard' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'rckt.dev.vcf'
+  link.click()
+  URL.revokeObjectURL(url)
 }
 
 function BusinessCard() {
+  const [qrMarkup, setQrMarkup] = useState('')
   const [objective, setObjective] = useState('')
   const [tasks, setTasks] = useState<TrackedTask[]>([])
+  const [showTasks, setShowTasks] = useState(false)
   const [notice, setNotice] = useState<Notice>(null)
 
   useEffect(() => {
     setTasks(localTaskTracker.list())
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    QRCode.toString(`${window.location.origin}/card`, {
+      type: 'svg',
+      margin: 0,
+      color: { dark: '#23384f', light: '#00000000' },
+    })
+      .then((svg) => {
+        if (!cancelled) setQrMarkup(svg)
+      })
+      .catch(() => {
+        /* QR is a nice-to-have; the card still works without it. */
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
@@ -43,20 +84,20 @@ function BusinessCard() {
     const cleaned = objective.trim()
 
     if (cleaned.length < 5) {
-      announce('Add a little more detail before you save it.')
+      announce('Add a little more detail first.')
       return
     }
 
     const task = localTaskTracker.add(cleaned)
     setTasks((current) => [task, ...current])
     setObjective('')
+    setShowTasks(true)
     announce('Saved on this device. Nothing was sent anywhere yet.')
   }
 
   function handleRemove(task: TrackedTask) {
     localTaskTracker.remove(task.id)
     setTasks((current) => current.filter((item) => item.id !== task.id))
-    announce('Removed from your tracker.')
   }
 
   function unavailableChannel(channel: string) {
@@ -64,138 +105,133 @@ function BusinessCard() {
   }
 
   return (
-    <>
-      <header className="border-b border-ink/8 bg-[#eef5fb]/88 backdrop-blur-xl">
-        <div className="mx-auto flex h-[70px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-6 sm:w-[min(1180px,calc(100%-32px))]">
-          <Logo />
-          <a
-            href="/"
-            className="inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-ink-soft outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-          >
-            <ArrowLeft className="size-4" aria-hidden="true" />
-            Back to rckt.dev
-          </a>
-        </div>
-      </header>
+    <div className="flex min-h-screen items-center justify-center px-4 py-14">
+      <a
+        href="/"
+        className="fixed top-5 left-5 z-20 inline-flex items-center gap-1.5 rounded-full border border-ink/12 bg-paper/80 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+      >
+        <ArrowLeft className="size-3.5" aria-hidden="true" />
+        rckt.dev
+      </a>
 
-      <main className="mx-auto w-[min(980px,calc(100%-24px))] pt-12 pb-20 sm:w-[min(980px,calc(100%-32px))] sm:pt-16">
-        <Stamp>A shareable little desk</Stamp>
-        <h1 className="mt-5 max-w-xl text-[clamp(2.4rem,5.5vw,3.6rem)] leading-[0.98] font-black tracking-[-0.05em] text-ink">
-          The rckt.dev business card.
-        </h1>
-        <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
-          Pass this along, drop a task on it, and keep an eye on what you’ve sent — all from one
-          page.
-        </p>
-
-        <div className="mt-10 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div className="paper-tape relative -rotate-[0.6deg] self-start rounded-[10px_18px_12px_16px] border border-ink/15 bg-paper p-7 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.13)]">
-            <div className="flex items-center gap-3">
-              <img
-                src={paperRocket}
-                alt=""
-                aria-hidden="true"
-                className="size-10 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
-              />
-              <div>
-                <p className="text-xl font-black tracking-[-0.045em] text-ink">rckt.dev</p>
-                <p className="font-mono text-[10px] font-bold tracking-[0.14em] text-ink-soft uppercase">
-                  The little question desk
-                </p>
-              </div>
-            </div>
-
-            <p className="mt-6 text-sm leading-6 text-ink-soft">
-              Tell us what you’re trying to get done. We turn the confusing bit into a clear,
-              practical path — and hand the awkward part to a person when it needs one.
+      <div className="paper-tape relative w-full max-w-[380px] -rotate-[0.6deg] rounded-[14px_22px_16px_20px] border border-ink/15 bg-paper p-6 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.14)]">
+        <div className="flex items-center gap-3">
+          <img
+            src={paperRocket}
+            alt=""
+            aria-hidden="true"
+            className="size-10 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
+          />
+          <div className="min-w-0">
+            <p className="text-xl font-black tracking-[-0.045em] text-ink">rckt.dev</p>
+            <p className="truncate font-mono text-[10px] font-bold tracking-[0.12em] text-ink-soft uppercase">
+              The little question desk
             </p>
-
-            <div className="mt-6 flex items-center justify-between gap-3 border-t border-ink/10 pt-5 font-mono text-[11px] font-bold tracking-[0.08em] text-ink-soft uppercase">
-              <span>Web</span>
-              <span className="text-ink normal-case tracking-normal">rckt.dev</span>
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Button variant="chip" size="sm" onClick={() => unavailableChannel('Email')}>
-                <Mail className="size-4" aria-hidden="true" />
-                Email
-              </Button>
-              <Button variant="chip" size="sm" onClick={() => unavailableChannel('WhatsApp')}>
-                <MessageCircle className="size-4" aria-hidden="true" />
-                WhatsApp
-              </Button>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-6 shadow-[4px_6px_16px_rgba(35,56,79,0.09)]"
-              noValidate
-            >
-              <label htmlFor="card-objective" className="text-base font-extrabold text-ink">
-                Submit a task
-              </label>
-              <div className="ruled-field mt-2 rounded-md">
-                <Textarea
-                  id="card-objective"
-                  value={objective}
-                  placeholder="What are you trying to get done?"
-                  onChange={(event) => setObjective(event.target.value)}
-                />
-              </div>
-              <Button type="submit" className="mt-4">
-                <Send className="size-4" aria-hidden="true" />
-                Save to my tracker
-              </Button>
-            </form>
-
-            <div className="rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-6 shadow-[4px_6px_16px_rgba(35,56,79,0.09)]">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-base font-extrabold text-ink">Your tracked tasks</h2>
-                <span className="font-mono text-[10px] font-bold tracking-[0.1em] text-ink-soft uppercase">
-                  {tasks.length} saved
-                </span>
-              </div>
-              <p className="mt-1 text-xs leading-5 text-ink-soft">
-                Saved only in this browser, on this device. Nothing here is sent anywhere yet —
-                Case creation connects here in a future product slice.
-              </p>
-
-              {tasks.length === 0 ? (
-                <p className="mt-6 text-sm text-ink-soft">
-                  Nothing saved yet. Submit a task above to see it here.
-                </p>
-              ) : (
-                <ul className="mt-5 space-y-3">
-                  {tasks.map((task) => (
-                    <li
-                      key={task.id}
-                      className="flex items-start gap-3 rounded-lg border border-ink/10 bg-white/60 p-3"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <p className="line-clamp-2 text-sm font-semibold text-ink">{task.objective}</p>
-                        <p className="mt-1 flex items-center gap-1.5 font-mono text-[10px] font-bold tracking-[0.08em] text-ink-soft uppercase">
-                          <Clock className="size-3" aria-hidden="true" />
-                          {formatSubmittedAt(task.submittedAt)} · saved on this device
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        className="grid size-7 shrink-0 cursor-pointer place-content-center rounded-full outline-none hover:bg-ink/8 focus-visible:ring-2 focus-visible:ring-tan"
-                        onClick={() => handleRemove(task)}
-                        aria-label={`Remove "${task.objective}" from your tracker`}
-                      >
-                        <Trash2 className="size-3.5 text-ink-soft" aria-hidden="true" />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
           </div>
         </div>
-      </main>
+
+        <div className="mt-5 flex flex-col items-center gap-2 rounded-xl border border-dashed border-ink/20 bg-white/55 py-4">
+          {qrMarkup ? (
+            <div
+              className="size-28 [&_svg]:block [&_svg]:size-full"
+              dangerouslySetInnerHTML={{ __html: qrMarkup }}
+              aria-hidden="true"
+            />
+          ) : (
+            <div className="size-28 animate-pulse rounded-md bg-ink/5" aria-hidden="true" />
+          )}
+          <p className="font-mono text-[10px] font-bold tracking-[0.1em] text-ink-soft uppercase">
+            Scan to open rckt.dev/card
+          </p>
+        </div>
+
+        <div className="mt-5 flex items-center justify-center gap-3">
+          <Button
+            variant="chip"
+            size="icon"
+            aria-label="Email (prototype)"
+            onClick={() => unavailableChannel('Email')}
+          >
+            <Mail className="size-4" aria-hidden="true" />
+          </Button>
+          <Button
+            variant="chip"
+            size="icon"
+            aria-label="WhatsApp (prototype)"
+            onClick={() => unavailableChannel('WhatsApp')}
+          >
+            <MessageCircle className="size-4" aria-hidden="true" />
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={() => {
+              saveContact()
+              announce('Contact card downloaded.')
+            }}
+          >
+            <Download className="size-4" aria-hidden="true" />
+            Save contact
+          </Button>
+        </div>
+
+        <div className="mt-5 border-t border-ink/10 pt-4">
+          <form onSubmit={handleSubmit} className="flex items-center gap-2" noValidate>
+            <input
+              type="text"
+              value={objective}
+              onChange={(event) => setObjective(event.target.value)}
+              placeholder="Drop a task here…"
+              aria-label="What are you trying to get done?"
+              className="h-10 min-w-0 flex-1 rounded-full border border-ink/15 bg-white/70 px-4 text-sm font-semibold text-ink outline-none placeholder:text-slate-blue/75 focus-visible:border-ink/30 focus-visible:ring-3 focus-visible:ring-tan/35"
+            />
+            <Button type="submit" size="icon" aria-label="Save task to tracker">
+              <Send className="size-4" aria-hidden="true" />
+            </Button>
+          </form>
+
+          <button
+            type="button"
+            className="mt-3 flex w-full cursor-pointer items-center justify-between gap-2 text-xs font-semibold text-ink-soft outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+            onClick={() => setShowTasks((current) => !current)}
+            aria-expanded={showTasks}
+          >
+            <span>
+              {tasks.length
+                ? `${tasks.length} task${tasks.length === 1 ? '' : 's'} tracked on this device`
+                : 'No tasks tracked yet'}
+            </span>
+            <ChevronDown
+              className={cn('size-3.5 shrink-0 transition-transform', showTasks && 'rotate-180')}
+              aria-hidden="true"
+            />
+          </button>
+
+          {showTasks && tasks.length > 0 ? (
+            <ul className="mt-3 max-h-40 space-y-1.5 overflow-y-auto pr-1">
+              {tasks.map((task) => (
+                <li
+                  key={task.id}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-ink/10 bg-white/55 px-2.5 py-1.5"
+                >
+                  <span className="truncate text-xs font-semibold text-ink">{task.objective}</span>
+                  <button
+                    type="button"
+                    className="grid size-6 shrink-0 cursor-pointer place-content-center rounded-full outline-none hover:bg-ink/8 focus-visible:ring-2 focus-visible:ring-tan"
+                    onClick={() => handleRemove(task)}
+                    aria-label={`Remove "${task.objective}" from your tracker`}
+                  >
+                    <Trash2 className="size-3 text-ink-soft" aria-hidden="true" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          <p className="mt-3 text-[11px] leading-4 text-ink-soft/80">
+            Saved only in this browser. Nothing here is sent anywhere yet.
+          </p>
+        </div>
+      </div>
 
       <div
         key={notice?.key}
@@ -209,7 +245,7 @@ function BusinessCard() {
         <Sparkles className="size-4 shrink-0 text-tape" aria-hidden="true" />
         {notice?.message}
       </div>
-    </>
+    </div>
   )
 }
 
