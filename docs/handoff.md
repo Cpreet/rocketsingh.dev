@@ -1794,7 +1794,7 @@ The mobile composition intentionally prioritizes objective → CTA → avatar/co
 
 ## Business card route — feature branch
 
-The `feature/business-card` branch adds a compact `/card` route that introduces the product without turning the experience into a generic contact page or task tracker. Its content follows the product doctrine in `docs/vision.md`:
+The `feature/business-card` branch adds a compact `/card` route that introduces the product without turning the experience into a generic contact page or task tracker. Its content follows the repository's resolution-first product doctrine:
 
 ```text
 ASK   — name the finish
