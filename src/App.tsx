@@ -442,18 +442,21 @@ function App() {
       </header>
 
       <main id="top" className="pb-8 sm:pb-12">
-        <div className="mx-auto w-[min(1180px,calc(100%-20px))] sm:w-[min(1180px,calc(100%-32px))]">
-          <section
-            className="hero-panel relative mt-4 overflow-hidden rounded-[24px] border border-ink/10 px-4 pt-16 pb-0 shadow-[0_18px_50px_rgba(35,56,79,0.15)] sm:mt-8 sm:px-8 sm:pt-20 lg:mt-10 lg:min-h-[760px] lg:rounded-[36px] lg:p-0"
-            aria-labelledby="hero-title"
-          >
+        <section className="hero-panel relative isolate overflow-hidden" aria-labelledby="hero-title">
+          <div className="hero-grid absolute inset-0" aria-hidden="true" />
+          <div className="absolute -top-28 -left-20 size-80 rounded-full bg-white/30 blur-3xl" aria-hidden="true" />
+          <div className="absolute top-1/4 -right-16 size-[28rem] rounded-full bg-navy/10 blur-3xl" aria-hidden="true" />
+          <span className="hero-tick top-6 right-6 hidden lg:block" aria-hidden="true" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#eef4fa] sm:h-40" aria-hidden="true" />
+
+          <div className="relative z-10 mx-auto w-[min(1300px,calc(100%-24px))] px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-0 lg:pb-28">
             <span className="absolute top-7 left-5 -rotate-3 font-mono text-[11px] font-black tracking-[0.15em] text-ink-soft/75 sm:left-10 lg:top-14 lg:left-12 lg:text-xs">
               ASK HERE →
             </span>
 
             <div className="relative z-10 max-w-[570px] lg:absolute lg:top-24 lg:left-12">
               <Stamp>The little question desk on the internet</Stamp>
-              <h1 id="hero-title" className="mt-5 text-[clamp(3.25rem,8.2vw,5.5rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
+              <h1 id="hero-title" className="mt-5 text-[clamp(3.4rem,8.6vw,6.2rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
                 Got stuck?
                 <br />
                 <span className="scribble">Bring it here.</span>
@@ -480,8 +483,10 @@ function App() {
                 fetchPriority="high"
               />
             </figure>
-          </section>
+          </div>
+        </section>
 
+        <div className="mx-auto w-[min(1180px,calc(100%-20px))] sm:w-[min(1180px,calc(100%-32px))]">
           <section id="how" className="scroll-mt-24 pt-20 lg:pt-28">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="max-w-2xl text-[clamp(2.3rem,5vw,4rem)] leading-[0.96] font-black tracking-[-0.06em] text-ink">

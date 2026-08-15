@@ -85,7 +85,46 @@ a {
 .hero-panel {
   background:
     radial-gradient(circle at 14% 12%, rgb(255 255 255 / 90%), transparent 31rem),
-    linear-gradient(145deg, #dfeaf6 0%, #c6daee 55%, #8faecb 100%);
+    linear-gradient(160deg, #e5eff8 0%, #c6daee 42%, #8faecb 75%, #bcd2e6 100%);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgb(35 56 79 / 9%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(35 56 79 / 9%) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 0%, black 35%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 0%, black 35%, transparent 85%);
+}
+
+.hero-tick {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  opacity: 0.4;
+}
+
+.hero-tick::before,
+.hero-tick::after {
+  position: absolute;
+  content: "";
+  background: #23384f;
+}
+
+.hero-tick::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.hero-tick::after {
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
 }
 
 .ruled-field {
