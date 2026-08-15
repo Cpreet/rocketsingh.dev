@@ -1,15 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import {
-  ArrowLeft,
-  ChevronDown,
-  Download,
-  Mail,
-  MessageCircle,
-  Send,
-  Sparkles,
-  Trash2,
-} from 'lucide-react'
-import QRCode from 'qrcode'
+import { ArrowLeft, Send, Sparkles, Trash2 } from 'lucide-react'
 
 import paperRocket from '@/assets/paper-rocket.svg'
 import { Button } from '@/components/ui/button'
@@ -40,33 +30,22 @@ function saveContact() {
   URL.revokeObjectURL(url)
 }
 
+function formatSubmittedAt(iso: string) {
+  return new Date(iso).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
 function BusinessCard() {
-  const [qrMarkup, setQrMarkup] = useState('')
   const [objective, setObjective] = useState('')
   const [tasks, setTasks] = useState<TrackedTask[]>([])
-  const [showTasks, setShowTasks] = useState(false)
   const [notice, setNotice] = useState<Notice>(null)
 
   useEffect(() => {
     setTasks(localTaskTracker.list())
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-    QRCode.toString(`${window.location.origin}/card`, {
-      type: 'svg',
-      margin: 0,
-      color: { dark: '#23384f', light: '#00000000' },
-    })
-      .then((svg) => {
-        if (!cancelled) setQrMarkup(svg)
-      })
-      .catch(() => {
-        /* QR is a nice-to-have; the card still works without it. */
-      })
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   useEffect(() => {
@@ -91,7 +70,6 @@ function BusinessCard() {
     const task = localTaskTracker.add(cleaned)
     setTasks((current) => [task, ...current])
     setObjective('')
-    setShowTasks(true)
     announce('Saved on this device. Nothing was sent anywhere yet.')
   }
 
@@ -120,100 +98,68 @@ function BusinessCard() {
             src={paperRocket}
             alt=""
             aria-hidden="true"
-            className="size-10 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
+            className="size-9 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
           />
           <div className="min-w-0">
-            <p className="text-xl font-black tracking-[-0.045em] text-ink">rckt.dev</p>
+            <p className="text-lg font-black tracking-[-0.045em] text-ink">rckt.dev</p>
             <p className="truncate font-mono text-[10px] font-bold tracking-[0.12em] text-ink-soft uppercase">
               The little question desk
             </p>
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col items-center gap-2 rounded-xl border border-dashed border-ink/20 bg-white/55 py-4">
-          {qrMarkup ? (
-            <div
-              className="size-28 [&_svg]:block [&_svg]:size-full"
-              dangerouslySetInnerHTML={{ __html: qrMarkup }}
-              aria-hidden="true"
-            />
-          ) : (
-            <div className="size-28 animate-pulse rounded-md bg-ink/5" aria-hidden="true" />
-          )}
-          <p className="font-mono text-[10px] font-bold tracking-[0.1em] text-ink-soft uppercase">
-            Scan to open rckt.dev/card
-          </p>
-        </div>
+        <p className="mt-5 text-sm leading-6 text-ink-soft">
+          Got something you’re stuck on? Type it below and save it here — you’ll see it in your
+          tracker every time you come back to this card.
+        </p>
 
-        <div className="mt-5 flex items-center justify-center gap-3">
-          <Button
-            variant="chip"
-            size="icon"
-            aria-label="Email (prototype)"
-            onClick={() => unavailableChannel('Email')}
+        <form onSubmit={handleSubmit} className="mt-4" noValidate>
+          <label
+            htmlFor="card-objective"
+            className="font-mono text-[10px] font-bold tracking-[0.12em] text-ink-soft uppercase"
           >
-            <Mail className="size-4" aria-hidden="true" />
-          </Button>
-          <Button
-            variant="chip"
-            size="icon"
-            aria-label="WhatsApp (prototype)"
-            onClick={() => unavailableChannel('WhatsApp')}
-          >
-            <MessageCircle className="size-4" aria-hidden="true" />
-          </Button>
-          <Button
-            className="flex-1"
-            onClick={() => {
-              saveContact()
-              announce('Contact card downloaded.')
-            }}
-          >
-            <Download className="size-4" aria-hidden="true" />
-            Save contact
-          </Button>
-        </div>
-
-        <div className="mt-5 border-t border-ink/10 pt-4">
-          <form onSubmit={handleSubmit} className="flex items-center gap-2" noValidate>
+            What are you trying to get done?
+          </label>
+          <div className="mt-2 flex items-center gap-2">
             <input
+              id="card-objective"
               type="text"
               value={objective}
               onChange={(event) => setObjective(event.target.value)}
-              placeholder="Drop a task here…"
-              aria-label="What are you trying to get done?"
-              className="h-10 min-w-0 flex-1 rounded-full border border-ink/15 bg-white/70 px-4 text-sm font-semibold text-ink outline-none placeholder:text-slate-blue/75 focus-visible:border-ink/30 focus-visible:ring-3 focus-visible:ring-tan/35"
+              placeholder="e.g. move my domain without breaking email"
+              className="h-11 min-w-0 flex-1 rounded-full border border-ink/15 bg-white/70 px-4 text-sm font-semibold text-ink outline-none placeholder:text-slate-blue/75 focus-visible:border-ink/30 focus-visible:ring-3 focus-visible:ring-tan/35"
             />
             <Button type="submit" size="icon" aria-label="Save task to tracker">
               <Send className="size-4" aria-hidden="true" />
             </Button>
-          </form>
+          </div>
+        </form>
 
-          <button
-            type="button"
-            className="mt-3 flex w-full cursor-pointer items-center justify-between gap-2 text-xs font-semibold text-ink-soft outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
-            onClick={() => setShowTasks((current) => !current)}
-            aria-expanded={showTasks}
-          >
-            <span>
-              {tasks.length
-                ? `${tasks.length} task${tasks.length === 1 ? '' : 's'} tracked on this device`
-                : 'No tasks tracked yet'}
+        <div className="mt-6 border-t border-ink/10 pt-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-sm font-extrabold text-ink">Your tracked tasks</h2>
+            <span className="font-mono text-[10px] font-bold tracking-[0.1em] text-ink-soft uppercase">
+              {tasks.length} saved
             </span>
-            <ChevronDown
-              className={cn('size-3.5 shrink-0 transition-transform', showTasks && 'rotate-180')}
-              aria-hidden="true"
-            />
-          </button>
+          </div>
 
-          {showTasks && tasks.length > 0 ? (
-            <ul className="mt-3 max-h-40 space-y-1.5 overflow-y-auto pr-1">
+          {tasks.length === 0 ? (
+            <p className="mt-3 text-xs leading-5 text-ink-soft">
+              Nothing yet — submit a task above and it’ll show up here, on this device.
+            </p>
+          ) : (
+            <ul className="mt-3 max-h-52 space-y-1.5 overflow-y-auto pr-1">
               {tasks.map((task) => (
                 <li
                   key={task.id}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-ink/10 bg-white/55 px-2.5 py-1.5"
+                  className="flex items-start justify-between gap-2 rounded-lg border border-ink/10 bg-white/55 px-3 py-2"
                 >
-                  <span className="truncate text-xs font-semibold text-ink">{task.objective}</span>
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-xs font-semibold text-ink">{task.objective}</p>
+                    <p className="mt-0.5 font-mono text-[9px] font-bold tracking-[0.06em] text-ink-soft uppercase">
+                      {formatSubmittedAt(task.submittedAt)}
+                    </p>
+                  </div>
                   <button
                     type="button"
                     className="grid size-6 shrink-0 cursor-pointer place-content-center rounded-full outline-none hover:bg-ink/8 focus-visible:ring-2 focus-visible:ring-tan"
@@ -225,11 +171,40 @@ function BusinessCard() {
                 </li>
               ))}
             </ul>
-          ) : null}
+          )}
 
           <p className="mt-3 text-[11px] leading-4 text-ink-soft/80">
             Saved only in this browser. Nothing here is sent anywhere yet.
           </p>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-ink/10 pt-4 text-xs font-semibold text-ink-soft">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="cursor-pointer outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+              onClick={() => unavailableChannel('Email')}
+            >
+              Email
+            </button>
+            <button
+              type="button"
+              className="cursor-pointer outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+              onClick={() => unavailableChannel('WhatsApp')}
+            >
+              WhatsApp
+            </button>
+          </div>
+          <button
+            type="button"
+            className="cursor-pointer border-b border-dotted border-ink/30 outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+            onClick={() => {
+              saveContact()
+              announce('Contact card downloaded.')
+            }}
+          >
+            Save contact
+          </button>
         </div>
       </div>
 
