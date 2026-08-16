@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>rckt.dev — Get unstuck</title>
-  <meta name="description" content="A scrapbook-style question desk prototype for rckt.dev." />
+  <title>rocketsingh.dev — Get unstuck</title>
+  <meta name="description" content="A scrapbook-style question desk prototype for rocketsingh.dev." />
   <style>
     :root {
       --sky-0: #dfeaf6;
@@ -717,15 +717,15 @@
 <body>
   <header>
     <div class="shell nav">
-      <a href="#" class="brand" aria-label="rckt.dev home">
+      <a href="#" class="brand" aria-label="rocketsingh.dev home">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span>rckt.dev</span>
+        <span>rocketsingh.dev</span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#how">How it works</a>
         <a href="#questions">Things we solve</a>
         <a href="#recipe">A sample answer</a>
-        <a href="#ask" class="mini-cta">Ask rckt</a>
+        <a href="#ask" class="mini-cta">Ask rocketsingh</a>
       </nav>
     </div>
   </header>
@@ -822,7 +822,7 @@
           <span class="eyebrow">Not just an answer</span>
           <h2>A path you can actually finish.</h2>
           <p>
-            The useful unit on rckt.dev is a recipe: objective, prerequisites, concrete steps,
+            The useful unit on rocketsingh.dev is a recipe: objective, prerequisites, concrete steps,
             checkpoints, caveats, and an escalation path when reality disagrees with the instructions.
           </p>
         </div>
@@ -879,7 +879,7 @@
 
       <footer>
         <div class="footer-row">
-          <strong>rckt.dev — tiny problems, properly finished.</strong>
+          <strong>rocketsingh.dev — tiny problems, properly finished.</strong>
           <span>Prototype concept · scrapbook question desk</span>
         </div>
       </footer>
@@ -927,7 +927,7 @@
         toast("Tell the desk what you're trying to get done.");
         return false;
       }
-      toast("Got it — this is where rckt would open a case.");
+      toast("Got it — this is where rocketsingh would open a case.");
       return false;
     }
 
@@ -939,7 +939,7 @@
       const done = checks.filter(c => c.checked).length;
       bar.style.width = ((done / checks.length) * 100) + "%";
       label.textContent = `${done} of ${checks.length} steps complete`;
-      if (done === checks.length) toast("Done. That is the feeling rckt should optimize for.");
+      if (done === checks.length) toast("Done. That is the feeling rocketsingh should optimize for.");
     }
 
     checks.forEach(c => c.addEventListener("change", updateProgress));

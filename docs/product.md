@@ -1,8 +1,8 @@
-# rckt.dev product brief
+# rocketsingh.dev product brief
 
 ## Product interpretation
 
-rckt.dev is a resolution desk for everyday problems. A person states the outcome they want in ordinary language; the product turns that into a Case, gathers only the missing context, and offers a structured path to completion. Conversation, tools, evidence, and human help are supporting mechanisms. The customer-facing unit is progress toward “done,” not a chat transcript or a search result.
+rocketsingh.dev is a resolution desk for everyday problems. A person states the outcome they want in ordinary language; the product turns that into a Case, gathers only the missing context, and offers a structured path to completion. Conversation, tools, evidence, and human help are supporting mechanisms. The customer-facing unit is progress toward “done,” not a chat transcript or a search result.
 
 ## Experience principles
 

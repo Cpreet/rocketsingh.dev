@@ -1,6 +1,6 @@
-# rckt.dev — Product Planning and Implementation Handoff
+# rocketsingh.dev — Product Planning and Implementation Handoff
 
-You are the lead engineer responsible for planning and implementing **rckt.dev**.
+You are the lead engineer responsible for planning and implementing **rocketsingh.dev**.
 
 Do not immediately start building features.
 
@@ -12,7 +12,7 @@ The resulting application should be production-oriented, extensible, and intenti
 
 # 1. Product
 
-**rckt.dev** is a general-purpose resolution desk for small everyday problems.
+**rocketsingh.dev** is a general-purpose resolution desk for small everyday problems.
 
 A person should be able to arrive with a vague, practical problem such as:
 
@@ -42,7 +42,7 @@ Person has an objective
         ↓
 Something blocks them
         ↓
-rckt understands the case
+rocketsingh understands the case
         ↓
 diagnosis / information / procedure / tool / human help
         ↓
@@ -53,7 +53,7 @@ objective completed
 
 The primary promise is:
 
-> Tell rckt what you're trying to get done.
+> Tell rocketsingh what you're trying to get done.
 
 Internally, think:
 
@@ -77,7 +77,7 @@ For example, instead of answering:
 
 > "Here are common reasons printers stop working."
 
-rckt should eventually provide:
+rocketsingh should eventually provide:
 
 ```text
 Goal
@@ -113,7 +113,7 @@ The project includes a supplied visual prototype and asset bundle.
 Expected assets include approximately:
 
 ```text
-rckt-dev-assets/
+rocketsingh-dev-assets/
 ├── index.html
 ├── README.txt
 └── assets/
@@ -196,7 +196,7 @@ The homepage is primarily an intake desk.
 Above the fold should contain:
 
 ```text
-rckt.dev
+rocketsingh.dev
 
 Got stuck?
 Bring it here.
@@ -935,7 +935,7 @@ Case objective
 
 Conversation
 
-What rckt understands
+What rocketsingh understands
 
 Missing information
 
@@ -1536,7 +1536,7 @@ Examples:
 ```text
 chore: initialize application scaffold
 
-docs: define rckt case domain
+docs: define rocketsingh case domain
 
 feat(ui): add scrapbook design primitives
 
@@ -1612,7 +1612,7 @@ resolution
 A useful first vertical slice should demonstrate:
 
 ```text
-User visits rckt.dev
+User visits rocketsingh.dev
 
 ↓
 
@@ -1693,7 +1693,7 @@ complex AI interface
 weak application model
 ```
 
-The defensible part of rckt.dev should eventually become the accumulated mapping:
+The defensible part of rocketsingh.dev should eventually become the accumulated mapping:
 
 ```text
 problem

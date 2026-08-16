@@ -102,16 +102,16 @@ export function Logo() {
   return (
     <a
       href="#top"
-      className="inline-flex items-center gap-2.5 rounded-md text-[23px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60"
-      aria-label="rckt.dev home"
+      className="inline-flex min-w-0 items-center gap-2 rounded-md text-[19px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60 sm:gap-2.5 sm:text-[23px]"
+      aria-label="rocketsingh.dev home"
     >
       <img
         src={paperRocket}
         alt=""
         aria-hidden="true"
-        className="size-8 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
+        className="size-7 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)] sm:size-8"
       />
-      <span>rckt.dev</span>
+      <span>rocketsingh.dev</span>
     </a>
   )
 }
@@ -329,7 +329,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
     setCompleted(next)
 
     if (next.every(Boolean)) {
-      announce('Done. That is the feeling rckt is built around.')
+      announce('Done. That is the feeling rocketsingh is built around.')
     }
   }
 
@@ -341,7 +341,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
           A path you can actually finish.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
-          A rckt recipe has an objective, useful checks, concrete steps and a fallback for when
+          A rocketsingh recipe has an objective, useful checks, concrete steps and a fallback for when
           reality disagrees with the instructions.
         </p>
         <div className="mt-7 flex items-center gap-3 font-mono text-[11px] font-black tracking-[0.12em] text-ink-soft uppercase">
@@ -427,7 +427,7 @@ function App() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-ink/8 bg-[#eef5fb]/88 backdrop-blur-xl">
-        <div className="mx-auto flex h-[70px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-6 sm:w-[min(1180px,calc(100%-32px))]">
+        <div className="mx-auto flex h-[70px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-2 sm:w-[min(1180px,calc(100%-32px))] sm:gap-6">
           <Logo />
           <nav className="flex items-center gap-5 text-sm font-semibold text-ink-soft" aria-label="Primary navigation">
             <a className="hidden rounded-sm outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan md:inline" href="#how">
@@ -440,7 +440,8 @@ function App() {
               A sample path
             </a>
             <a className={cn(buttonVariants({ size: 'sm' }), 'text-white')} href="#ask">
-              Ask rckt
+              <span className="sm:hidden">Ask</span>
+              <span className="hidden sm:inline">Ask rocketsingh</span>
             </a>
           </nav>
         </div>
@@ -595,7 +596,7 @@ function App() {
                 <a className="hover:text-ink" href="/card">
                   Business card
                 </a>
-                <span>© 2026 rckt.dev</span>
+                <span>© 2026 rocketsingh.dev</span>
               </div>
             </div>
           </footer>
