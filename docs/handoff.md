@@ -1740,7 +1740,7 @@ Only after that should implementation begin with the design foundation and homep
 
 # 44. Current Implementation Update
 
-**Updated: 2026-08-15**
+**Updated: 2026-08-16**
 
 ## Discovery and planning — complete
 
@@ -1792,9 +1792,9 @@ Footer
 
 The mobile composition intentionally prioritizes objective → CTA → avatar/context. The supplied avatar has been optimized into a 32 KB WebP derivative.
 
-## Business card route — feature branch
+## Business card route — complete
 
-The `feature/business-card` branch adds a compact `/card` route that introduces the product without turning the experience into a generic contact page or task tracker. Its content follows the repository's resolution-first product doctrine:
+The public `/card` route introduces the product without turning the experience into a generic contact page or task tracker. Its content follows the repository's resolution-first product doctrine:
 
 ```text
 ASK   — name the finish
@@ -1803,6 +1803,31 @@ DONE  — verify an observable result
 ```
 
 The card keeps the established taped-paper composition and palette. Its compact objective widget carries the visitor's text into the homepage intake at `/#ask`, while WhatsApp, Telegram, Instagram, and email starters provide alternate entry points without presenting channels as the product. The route does not persist objectives or pretend to create a Case before the backend boundary exists.
+
+## Search, sharing, and install metadata — complete
+
+The two public routes now build as separate static HTML entries. This keeps the current React application while giving crawlers and link-preview clients route-specific metadata without requiring client-side rendering:
+
+```text
+/       → index.html → homepage title, description, canonical and structured data
+/card   → card.html  → card-specific title, description, canonical and structured data
+```
+
+Both entries include Open Graph and Twitter card metadata backed by a branded 1200 × 630 share image. The root page publishes `WebSite`, `Organization`, `WebPage`, and `ImageObject` JSON-LD. Crawl and install support now includes `robots.txt`, an absolute-URL XML sitemap, a web app manifest, and 192px/512px icons.
+
+Netlify no longer rewrites every unknown request to the homepage. `/card/` redirects to the canonical `/card` path, while missing paths can return a genuine 404 instead of a soft 404. Baseline security headers and long-lived caching for fingerprinted build assets are configured in `netlify.toml`.
+
+The metadata intentionally describes the existing resolution desk. It does not add keyword-stuffed pages, unsupported service claims, ratings, reviews, or schema types that the product cannot substantiate.
+
+## Deployment — current
+
+The production build is deployed to Netlify at:
+
+```text
+https://rocketsingh-dev.netlify.app
+```
+
+The intended canonical origin is `https://rocketsingh.dev`. DNS still needs to be pointed at and attached to the Netlify site before the canonical URLs, sitemap, and share image are publicly authoritative on that domain.
 
 ## Current service boundary
 
@@ -1818,6 +1843,8 @@ bun run lint
 ```
 
 Visual verification was performed with headless Chrome at 1440px desktop, 390px mobile, and the 320px minimum viewport. The desktop intake positioning and the mobile intake-before-avatar ordering were specifically checked.
+
+SEO output is also verified during production builds: both JSON-LD blocks parse, the web manifest is valid JSON, the sitemap is valid XML, route titles and canonicals are distinct, and the generated social image is exactly 1200 × 630.
 
 ## Next recommended vertical slice
 
