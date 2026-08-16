@@ -46,19 +46,38 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebPage",
-        "@id": "https://rocketsingh.dev/card#webpage",
-        "url": "https://rocketsingh.dev/card",
-        "name": "Bring us the thing you're stuck on",
-        "description": "Start with the outcome you need and get one clear next step toward done.",
-        "isPartOf": { "@id": "https://rocketsingh.dev/#website" },
-        "about": { "@id": "https://rocketsingh.dev/#organization" },
-        "primaryImageOfPage": {
-          "@type": "ImageObject",
-          "url": "https://rocketsingh.dev/og-image.png",
-          "width": 1200,
-          "height": 630
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://rocketsingh.dev/#organization",
+            "name": "rocketsingh.dev",
+            "url": "https://rocketsingh.dev/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://rocketsingh.dev/#logo",
+              "url": "https://rocketsingh.dev/logo-512.png",
+              "contentUrl": "https://rocketsingh.dev/logo-512.png",
+              "caption": "rocketsingh.dev",
+              "width": 512,
+              "height": 512
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://rocketsingh.dev/card#webpage",
+            "url": "https://rocketsingh.dev/card",
+            "name": "Bring us the thing you're stuck on",
+            "description": "Start with the outcome you need and get one clear next step toward done.",
+            "isPartOf": { "@id": "https://rocketsingh.dev/#website" },
+            "about": { "@id": "https://rocketsingh.dev/#organization" },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://rocketsingh.dev/og-image.png",
+              "width": 1200,
+              "height": 630
+            }
+          }
+        ]
       }
     </script>
   </head>
