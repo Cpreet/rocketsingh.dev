@@ -1813,7 +1813,7 @@ The two public routes now build as separate static HTML entries. This keeps the 
 /card   → card.html  → card-specific title, description, canonical and structured data
 ```
 
-Both entries include Open Graph and Twitter card metadata backed by a branded 1200 × 630 share image. The root page publishes `WebSite`, `Organization`, `WebPage`, and `ImageObject` JSON-LD. Crawl and install support now includes `robots.txt`, an absolute-URL XML sitemap, a web app manifest, and 192px/512px icons.
+Both entries include Open Graph and Twitter card metadata backed by a branded 1200 × 630 share image. The share image, favicon derivatives, install icons, and structured-data `Organization.logo` all use the same canonical paper-rocket silhouette as the interface; the dedicated schema logo is a verified 512 × 512 PNG. The root page publishes `WebSite`, `Organization`, `WebPage`, and `ImageObject` JSON-LD. Crawl and install support now includes `robots.txt`, an absolute-URL XML sitemap, a web app manifest, and 192px/512px icons.
 
 Netlify no longer rewrites every unknown request to the homepage. Native pretty-URL handling serves `card.html` at the canonical `/card` path, while missing paths return a genuine 404 instead of a soft 404. Baseline security headers, the web-manifest content type, and long-lived caching for fingerprinted build assets are configured in `netlify.toml`.
 
