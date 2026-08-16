@@ -102,14 +102,14 @@ export function Logo() {
   return (
     <a
       href="#top"
-      className="inline-flex items-center gap-2.5 rounded-md text-[23px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60"
+      className="inline-flex min-w-0 items-center gap-2 rounded-md text-[19px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60 sm:gap-2.5 sm:text-[23px]"
       aria-label="rocketsingh.dev home"
     >
       <img
         src={paperRocket}
         alt=""
         aria-hidden="true"
-        className="size-8 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
+        className="size-7 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)] sm:size-8"
       />
       <span>rocketsingh.dev</span>
     </a>
@@ -427,7 +427,7 @@ function App() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-ink/8 bg-[#eef5fb]/88 backdrop-blur-xl">
-        <div className="mx-auto flex h-[70px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-6 sm:w-[min(1180px,calc(100%-32px))]">
+        <div className="mx-auto flex h-[70px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-2 sm:w-[min(1180px,calc(100%-32px))] sm:gap-6">
           <Logo />
           <nav className="flex items-center gap-5 text-sm font-semibold text-ink-soft" aria-label="Primary navigation">
             <a className="hidden rounded-sm outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan md:inline" href="#how">
@@ -440,7 +440,8 @@ function App() {
               A sample path
             </a>
             <a className={cn(buttonVariants({ size: 'sm' }), 'text-white')} href="#ask">
-              Ask rocketsingh
+              <span className="sm:hidden">Ask</span>
+              <span className="hidden sm:inline">Ask rocketsingh</span>
             </a>
           </nav>
         </div>
