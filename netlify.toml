@@ -2,12 +2,6 @@
   command = "bun run build"
   publish = "dist"
 
-[[redirects]]
-  from = "/card/"
-  to = "/card"
-  status = 301
-  force = true
-
 [[headers]]
   for = "/*"
 
@@ -28,3 +22,9 @@
 
   [headers.values]
     Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/site.webmanifest"
+
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"

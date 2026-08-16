@@ -1815,7 +1815,7 @@ The two public routes now build as separate static HTML entries. This keeps the 
 
 Both entries include Open Graph and Twitter card metadata backed by a branded 1200 × 630 share image. The root page publishes `WebSite`, `Organization`, `WebPage`, and `ImageObject` JSON-LD. Crawl and install support now includes `robots.txt`, an absolute-URL XML sitemap, a web app manifest, and 192px/512px icons.
 
-Netlify no longer rewrites every unknown request to the homepage. `/card/` redirects to the canonical `/card` path, while missing paths can return a genuine 404 instead of a soft 404. Baseline security headers and long-lived caching for fingerprinted build assets are configured in `netlify.toml`.
+Netlify no longer rewrites every unknown request to the homepage. Native pretty-URL handling serves `card.html` at the canonical `/card` path, while missing paths return a genuine 404 instead of a soft 404. Baseline security headers, the web-manifest content type, and long-lived caching for fingerprinted build assets are configured in `netlify.toml`.
 
 The metadata intentionally describes the existing resolution desk. It does not add keyword-stuffed pages, unsupported service claims, ratings, reviews, or schema types that the product cannot substantiate.
 
