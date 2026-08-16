@@ -2,7 +2,7 @@
 
 ## Product invariant
 
-rckt.dev is a resolution desk, not a generic chatbot. Optimize every feature for a clear objective, next action, expected result, progress, and verifiable completion. Preserve Case context across automation and human escalation.
+rocketsingh.dev is a resolution desk, not a generic chatbot. Optimize every feature for a clear objective, next action, expected result, progress, and verifiable completion. Preserve Case context across automation and human escalation.
 
 ## Read first
 
@@ -14,7 +14,7 @@ Before changing product behaviour or architecture, read:
 - `docs/implementation-plan.md`
 - relevant ADRs in `docs/decisions/`
 
-The supplied visual reference remains in `docs/rckt-dev-prototype.html` and `docs/rckt-dev-assets/`.
+The supplied visual reference remains in `docs/rocketsingh-dev-prototype.html` and `docs/rocketsingh-dev-assets/`.
 
 ## Engineering conventions
 

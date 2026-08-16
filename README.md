@@ -1,4 +1,4 @@
-# rckt.dev
+# rocketsingh.dev
 
 A friendly resolution desk for everyday problems. The current repository contains the production-oriented design foundation and public intake homepage described in `docs/handoff.md`.
 

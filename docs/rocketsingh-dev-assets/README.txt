@@ -1,4 +1,4 @@
-rckt.dev prototype asset bundle
+rocketsingh.dev prototype asset bundle
 
 Files:
 - index.html

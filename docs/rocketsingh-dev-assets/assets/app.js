@@ -36,7 +36,7 @@ const samples = [
         toast("Tell the desk what you're trying to get done.");
         return false;
       }
-      toast("Got it — this is where rckt would open a case.");
+      toast("Got it — this is where rocketsingh would open a case.");
       return false;
     }
 
@@ -48,7 +48,7 @@ const samples = [
       const done = checks.filter(c => c.checked).length;
       bar.style.width = ((done / checks.length) * 100) + "%";
       label.textContent = `${done} of ${checks.length} steps complete`;
-      if (done === checks.length) toast("Done. That is the feeling rckt should optimize for.");
+      if (done === checks.length) toast("Done. That is the feeling rocketsingh should optimize for.");
     }
 
     checks.forEach(c => c.addEventListener("change", updateProgress));

@@ -103,7 +103,7 @@ export function Logo() {
     <a
       href="#top"
       className="inline-flex items-center gap-2.5 rounded-md text-[23px] font-black tracking-[-0.055em] text-ink outline-none focus-visible:ring-3 focus-visible:ring-tan/60"
-      aria-label="rckt.dev home"
+      aria-label="rocketsingh.dev home"
     >
       <img
         src={paperRocket}
@@ -111,7 +111,7 @@ export function Logo() {
         aria-hidden="true"
         className="size-8 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
       />
-      <span>rckt.dev</span>
+      <span>rocketsingh.dev</span>
     </a>
   )
 }
@@ -329,7 +329,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
     setCompleted(next)
 
     if (next.every(Boolean)) {
-      announce('Done. That is the feeling rckt is built around.')
+      announce('Done. That is the feeling rocketsingh is built around.')
     }
   }
 
@@ -341,7 +341,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
           A path you can actually finish.
         </h2>
         <p className="mt-5 max-w-xl text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
-          A rckt recipe has an objective, useful checks, concrete steps and a fallback for when
+          A rocketsingh recipe has an objective, useful checks, concrete steps and a fallback for when
           reality disagrees with the instructions.
         </p>
         <div className="mt-7 flex items-center gap-3 font-mono text-[11px] font-black tracking-[0.12em] text-ink-soft uppercase">
@@ -440,7 +440,7 @@ function App() {
               A sample path
             </a>
             <a className={cn(buttonVariants({ size: 'sm' }), 'text-white')} href="#ask">
-              Ask rckt
+              Ask rocketsingh
             </a>
           </nav>
         </div>
@@ -595,7 +595,7 @@ function App() {
                 <a className="hover:text-ink" href="/card">
                   Business card
                 </a>
-                <span>© 2026 rckt.dev</span>
+                <span>© 2026 rocketsingh.dev</span>
               </div>
             </div>
           </footer>

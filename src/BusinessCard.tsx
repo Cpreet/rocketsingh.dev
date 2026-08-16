@@ -76,7 +76,7 @@ function ResolutionStep({
 
 function getContactStarters(objective: string) {
   const starterMessage = encodeURIComponent(
-    `Hi rckt — I'm trying to get this done: ${objective.trim()}`,
+    `Hi rocketsingh — I'm trying to get this done: ${objective.trim()}`,
   )
 
   return [
@@ -87,7 +87,7 @@ function getContactStarters(objective: string) {
     },
     {
       label: 'Telegram',
-      href: `https://t.me/share/url?url=https%3A%2F%2Frckt.dev&text=${starterMessage}`,
+      href: `https://t.me/share/url?url=https%3A%2F%2Frocketsingh.dev&text=${starterMessage}`,
       icon: Send,
     },
     {
@@ -120,7 +120,7 @@ function BusinessCard() {
         className="fixed top-5 left-5 z-20 inline-flex items-center gap-1.5 rounded-full border border-ink/12 bg-paper/80 px-3 py-1.5 text-xs font-semibold text-ink-soft backdrop-blur outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
       >
         <ArrowLeft className="size-3.5" aria-hidden="true" />
-        rckt.dev
+        rocketsingh.dev
       </a>
 
       <article className="relative z-10 w-full max-w-[410px]" aria-labelledby="card-title">
@@ -138,7 +138,7 @@ function BusinessCard() {
               className="size-9 shrink-0 rotate-[18deg] drop-shadow-[1px_2px_2px_rgba(35,56,79,0.3)]"
             />
             <div className="min-w-0">
-              <p className="text-lg font-black tracking-[-0.045em] text-ink">rckt.dev</p>
+              <p className="text-lg font-black tracking-[-0.045em] text-ink">rocketsingh.dev</p>
               <p className="font-mono text-[9px] font-bold tracking-[0.13em] text-ink-soft uppercase">
                 The little resolution desk
               </p>
@@ -158,12 +158,12 @@ function BusinessCard() {
               Leave with it <span className="scribble">done.</span>
             </h1>
             <p className="mt-3 max-w-[35ch] text-[13px] leading-[1.55] font-medium text-ink-soft">
-              Tell rckt the outcome you need—even if the problem is messy. We’ll turn it into the
+              Tell rocketsingh the outcome you need—even if the problem is messy. We’ll turn it into the
               shortest useful path forward.
             </p>
           </div>
 
-          <ol className="mt-6 flex items-start justify-between gap-1" aria-label="How rckt helps">
+          <ol className="mt-6 flex items-start justify-between gap-1" aria-label="How rocketsingh helps">
             {resolutionSteps.map((step, index) => (
               <Fragment key={step.stamp}>
                 <ResolutionStep {...step} />

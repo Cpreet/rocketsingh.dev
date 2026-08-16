@@ -4,7 +4,7 @@ Follow `AGENTS.md` as the canonical repository guidance.
 
 ## Working context
 
-rckt.dev turns an unstructured objective into a Case and then a structured, checkable path to completion. Chat is supporting infrastructure. Do not redesign the experience as a full-screen chatbot, support directory, or category picker.
+rocketsingh.dev turns an unstructured objective into a Case and then a structured, checkable path to completion. Chat is supporting infrastructure. Do not redesign the experience as a full-screen chatbot, support directory, or category picker.
 
 ## Implementation notes
 
