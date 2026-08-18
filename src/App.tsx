@@ -20,7 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { prototypeIntakeService } from '@/services/intake'
+import { kanbnIntakeService } from '@/services/intake'
 
 const promptSamples = [
   "My printer won't connect to my laptop.",
@@ -176,18 +176,27 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
     setError('')
     setIsSubmitting(true)
 
-    const result = await prototypeIntakeService.submit({
-      objective: cleanedObjective,
-      attachments: files.map((file) => ({
-        name: file.name,
-        type: file.type,
-        size: file.size,
-      })),
-    })
+    try {
+      const result = await kanbnIntakeService.submit({
+        objective: cleanedObjective,
+        source: 'homepage',
+      })
 
-    setReceipt(result.message)
-    setIsSubmitting(false)
-    announce('Request captured for this preview.')
+      setReceipt(
+        files.length
+          ? `${result.message} Your staged files have not been sent yet.`
+          : result.message,
+      )
+      announce('Request added to the incoming desk.')
+    } catch (submissionError) {
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : 'We could not add that request to the desk. Please try again.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function unavailableChannel(channel: string) {

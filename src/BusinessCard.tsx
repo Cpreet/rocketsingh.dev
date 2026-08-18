@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, type FormEvent } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,6 +15,7 @@ import {
 import paperRocket from '@/assets/paper-rocket.svg'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
+import { kanbnIntakeService } from '@/services/intake'
 
 const resolutionSteps: {
   icon: LucideIcon
@@ -105,7 +106,37 @@ function getContactStarters(objective: string) {
 
 function BusinessCard() {
   const [objective, setObjective] = useState('')
+  const [error, setError] = useState('')
+  const [receipt, setReceipt] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const contactStarters = getContactStarters(objective)
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const cleanedObjective = objective.trim()
+
+    if (cleanedObjective.length < 5) {
+      setError('Tell us a little more about what you are trying to finish.')
+      setReceipt('')
+      return
+    }
+
+    setError('')
+    setIsSubmitting(true)
+
+    try {
+      const result = await kanbnIntakeService.submit({ objective: cleanedObjective, source: 'card' })
+      setReceipt(result.message)
+    } catch (submissionError) {
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : 'We could not add that request to the desk. Please try again.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <main className="hero-panel relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-16">
@@ -174,7 +205,7 @@ function BusinessCard() {
             ))}
           </ol>
 
-          <form action="/#ask" method="get" className="mt-6">
+          <form className="mt-6" onSubmit={handleSubmit} noValidate>
             <label
               htmlFor="card-objective"
               className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase"
@@ -192,20 +223,39 @@ function BusinessCard() {
                 maxLength={500}
                 autoComplete="off"
                 value={objective}
-                onChange={(event) => setObjective(event.target.value)}
+                onChange={(event) => {
+                  setObjective(event.target.value)
+                  if (error) setError('')
+                  if (receipt) setReceipt('')
+                }}
                 placeholder="What are you stuck on?"
                 className="h-9 w-full border-0 border-b border-ink/15 bg-transparent px-0 text-[12px] font-semibold text-ink outline-none placeholder:text-slate-blue/80 focus-visible:border-ink/40"
+                aria-describedby={error ? 'card-objective-error' : receipt ? 'card-objective-receipt' : undefined}
+                aria-invalid={Boolean(error)}
               />
               <p className="mt-2 text-[9px] leading-relaxed font-medium text-ink-soft">
                 Start messy. Add screenshots and files at the desk.
               </p>
             </div>
 
+            {error ? (
+              <p id="card-objective-error" className="mt-2 text-xs font-semibold text-error" role="alert">
+                {error}
+              </p>
+            ) : null}
+
+            {receipt ? (
+              <p id="card-objective-receipt" className="mt-2 text-xs leading-relaxed font-semibold text-slate-blue" role="status">
+                {receipt}
+              </p>
+            ) : null}
+
             <button
               type="submit"
               className={cn(buttonVariants({ size: 'lg' }), 'mt-5 w-full rounded-xl')}
+              disabled={isSubmitting}
             >
-              Bring me a problem
+              {isSubmitting ? 'Adding it to the desk…' : 'Bring me a problem'}
               <ArrowRight className="size-4" aria-hidden="true" />
             </button>
           </form>

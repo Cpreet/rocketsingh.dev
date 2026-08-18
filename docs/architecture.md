@@ -5,10 +5,10 @@
 The current application is a frontend-first React 19 + TypeScript + Vite application. Tailwind CSS v4 provides tokens and utilities, while local shadcn-style primitives provide accessible, composable controls without imposing a generic visual theme.
 
 ```text
-Homepage UI
-  -> intake form
+Homepage and card UI
   -> IntakeService contract
-  -> prototype adapter (in memory / acknowledgement only)
+  -> Netlify intake function
+  -> Kanbn incoming-list card
 
 Future API
   -> channel gateway
@@ -18,7 +18,7 @@ Future API
   -> classification / resolution routing
 ```
 
-UI components do not know transport payloads or storage providers. When an API exists, the prototype intake adapter can be replaced without changing the form contract.
+UI components do not know Kanbn payloads or credentials. The browser calls the typed intake service; the Netlify function owns the external API contract and keeps credentials server-side. A signed Kanbn webhook is acknowledged at a separate function endpoint and intentionally has no persistence or workflow side effects yet.
 
 ## Target system shape
 
