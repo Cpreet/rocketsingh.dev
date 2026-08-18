@@ -15,18 +15,18 @@ rocketsingh.dev is a resolution desk for everyday problems. A person states the 
 
 ## MVP scope
 
-This repository implements the public homepage and a mocked intake boundary:
+This repository implements the public homepage and a text-only intake boundary:
 
 - responsive intake hero with rotating examples;
 - accessible screenshot and file affordances;
-- validation and a clearly labelled prototype case acknowledgement;
+- validation and an acknowledgement after a Kanbn incoming ticket is created;
 - “ask / follow / done” explanation;
 - representative question wall;
 - interactive structured recipe preview;
 - human escalation CTA;
 - deterministic scrapbook design primitives.
 
-The MVP does not persist cases, upload files, contact external channels, charge payments, or provide an operator dashboard. These require backend and policy decisions listed in the implementation plan.
+The MVP does not persist Cases in this application, upload files, charge payments, or provide an operator dashboard. Text entered in the homepage and card intake is sent to the configured private Kanbn incoming list; files remain local until a private upload flow exists. These require backend and policy decisions listed in the implementation plan.
 
 ## Success signal
 

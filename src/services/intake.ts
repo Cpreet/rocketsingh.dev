@@ -1,12 +1,6 @@
-export interface IntakeAttachment {
-  name: string
-  type: string
-  size: number
-}
-
 export interface IntakeSubmission {
   objective: string
-  attachments: IntakeAttachment[]
+  source: 'homepage' | 'card'
 }
 
 export interface IntakeReceipt {
@@ -18,14 +12,31 @@ export interface IntakeService {
   submit(submission: IntakeSubmission): Promise<IntakeReceipt>
 }
 
-export const prototypeIntakeService: IntakeService = {
+export const kanbnIntakeService: IntakeService = {
   async submit(submission) {
-    await Promise.resolve()
+    const response = await fetch('/api/intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(submission),
+    })
 
-    return {
-      reference: `preview-${submission.objective.length}-${submission.attachments.length}`,
-      message:
-        'That gives us a good place to start. Case creation will connect here in the next product slice.',
+    const payload: unknown = await response.json().catch(() => null)
+
+    if (!response.ok || !isIntakeReceipt(payload)) {
+      throw new Error('We could not add that request to the desk. Please try again.')
     }
+
+    return payload
   },
+}
+
+function isIntakeReceipt(value: unknown): value is IntakeReceipt {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'reference' in value &&
+    typeof value.reference === 'string' &&
+    'message' in value &&
+    typeof value.message === 'string'
+  )
 }
