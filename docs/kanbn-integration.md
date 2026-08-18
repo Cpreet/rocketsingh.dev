@@ -1,6 +1,6 @@
 # Kanbn intake integration
 
-The homepage question textarea and the `/card` question field both send a text-only request to `POST /api/intake`. The Netlify function creates a Kanbn card in the configured **Incoming** list in the rocketsingh workspace. Files staged in the homepage UI are deliberately not sent; upload handling needs its own private storage and scanning flow.
+The homepage question textarea and the `/card` question field both send a request to `POST /api/intake` with a required reply email. The Netlify function creates a Kanbn card in the configured **Incoming** list in the rocketsingh workspace and adds the email as a reply link. Files staged in the homepage UI are deliberately not sent; upload handling needs its own private storage and scanning flow.
 
 ## Netlify environment variables
 
@@ -27,4 +27,4 @@ curl -X POST https://rocketsingh.dev/api/internal/kanbn-webhook/setup \
 
 It is idempotent: it creates a webhook only if the callback URL is not already present. The webhook subscribes to card creation, updates, moves, and deletion. The receiver verifies the HMAC signature when `KANBN_WEBHOOK_SECRET` is set, does not log or persist the event payload, and responds with `202 Accepted` immediately.
 
-Kanbn API keys, list IDs, workspace IDs, and webhook secrets must stay in Netlify environment settings; they are not required in the browser bundle.
+Kanbn API keys, list IDs, workspace IDs, webhook secrets, and requester email addresses must stay out of logs and browser configuration. The email is only sent in the intake request to create the private Kanbn card.

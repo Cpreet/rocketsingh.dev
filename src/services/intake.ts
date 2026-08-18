@@ -1,6 +1,7 @@
 export interface IntakeSubmission {
   objective: string
   source: 'homepage' | 'card'
+  email: string
 }
 
 export interface IntakeReceipt {
@@ -28,6 +29,10 @@ export const kanbnIntakeService: IntakeService = {
 
     return payload
   },
+}
+
+export function isValidReplyEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254
 }
 
 function isIntakeReceipt(value: unknown): value is IntakeReceipt {
