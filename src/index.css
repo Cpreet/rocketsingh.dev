@@ -311,3 +311,20 @@ p {
     transform: translate(8px, 5px);
   }
 }
+
+@media (max-width: 767px) {
+  .rocket-journey__trail-halo {
+    stroke-width: 5px;
+  }
+
+  .rocket-journey__trail {
+    stroke-width: 2px;
+    stroke-dasharray: 2 9;
+  }
+
+  .rocket-journey__rocket image {
+    width: 40px;
+    height: 27px;
+    transform: translate(10px, 6px);
+  }
+}
