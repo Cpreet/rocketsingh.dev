@@ -590,6 +590,7 @@ function RecipePreview({ announce }: IntakeDeskProps) {
 
 function App() {
   const [notice, setNotice] = useState<Notice>(null)
+  const [isNoticeVisible, setIsNoticeVisible] = useState(false)
 
   const announce = useMemo(
     () => (message: string) => setNotice({ message, key: Date.now() }),
@@ -598,7 +599,9 @@ function App() {
 
   useEffect(() => {
     if (!notice) return
-    const timer = window.setTimeout(() => setNotice(null), 3200)
+
+    setIsNoticeVisible(true)
+    const timer = window.setTimeout(() => setIsNoticeVisible(false), 3600)
     return () => window.clearTimeout(timer)
   }, [notice])
 
@@ -775,10 +778,9 @@ function App() {
       </main>
 
       <div
-        key={notice?.key}
         className={cn(
-          'pointer-events-none fixed bottom-5 left-1/2 z-[70] flex w-[min(440px,calc(100%-28px))] -translate-x-1/2 translate-y-3 items-center gap-2.5 rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white opacity-0 shadow-[0_18px_50px_rgba(35,56,79,0.25)] transition-all duration-200',
-          notice && 'translate-y-0 opacity-100',
+          'pointer-events-none fixed bottom-5 left-1/2 z-[70] flex w-[min(440px,calc(100%-28px))] -translate-x-1/2 items-center gap-2.5 rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(35,56,79,0.25)] transition-[opacity,translate] duration-250 ease-out',
+          isNoticeVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0',
         )}
         role="status"
         aria-live="polite"
