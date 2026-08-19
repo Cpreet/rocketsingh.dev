@@ -308,7 +308,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   return (
     <form
       id="ask"
-      className="paper-tape relative z-20 mx-auto mt-10 w-full max-w-[650px] -rotate-[0.25deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.17)] sm:p-6 lg:absolute lg:bottom-[90px] lg:left-10 lg:mx-0 lg:mt-0"
+      className="paper-tape relative z-20 mx-auto mt-9 w-full max-w-[650px] -rotate-[0.25deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.17)] sm:p-6 lg:mx-0 lg:mt-11"
       onSubmit={handleSubmit}
       noValidate
     >
@@ -612,18 +612,20 @@ function App() {
           <span className="hero-tick top-6 right-6 hidden lg:block" aria-hidden="true" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#eef4fa] sm:h-40" aria-hidden="true" />
 
-          <div className="relative z-10 mx-auto w-[min(1300px,calc(100%-24px))] px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-0 lg:pb-28">
-            <div className="relative z-10 mx-auto max-w-[570px] text-center lg:absolute lg:top-24 lg:left-12 lg:mx-0 lg:text-left">
-              <h1 id="hero-title" className="text-[clamp(3.4rem,8.6vw,6.2rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
-                Got stuck?
-                <br />
-                <span className="scribble">Bring it here.</span>
-              </h1>
+          <div className="relative z-10 mx-auto flex w-[min(1300px,calc(100%-24px))] flex-col px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-12 lg:pt-20 lg:pb-20">
+            <div className="mx-auto flex w-full max-w-[650px] flex-col justify-center lg:mx-0 lg:w-[52%] lg:flex-1">
+              <div className="relative z-10 text-center lg:text-left">
+                <h1 id="hero-title" className="text-[clamp(2.9rem,6.6vw,5.6rem)] leading-[0.94] font-black tracking-[-0.075em] text-ink">
+                  Got stuck?
+                  <br />
+                  <span className="scribble">Bring it here.</span>
+                </h1>
+              </div>
+
+              <IntakeDesk announce={announce} />
             </div>
 
-            <IntakeDesk announce={announce} />
-
-            <figure className="hidden z-0 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] lg:absolute lg:right-12 lg:bottom-[-30px] lg:block lg:h-auto lg:w-[470px] lg:overflow-visible">
+            <figure className="hidden z-0 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] lg:absolute lg:right-12 lg:bottom-[-40px] lg:block lg:h-auto lg:w-[400px] lg:overflow-visible xl:w-[470px] 2xl:w-[500px]">
               <span
                 className="absolute top-3 left-1/2 z-10 h-8 w-32 -translate-x-1/2 -rotate-[3deg] bg-tape/70 shadow-[0_2px_3px_rgba(35,56,79,0.1)] sm:w-40 lg:-top-2"
                 aria-hidden="true"
