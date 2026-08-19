@@ -16,6 +16,7 @@ import { QRCodeSVG } from 'qrcode.react'
 
 import avatar from '@/assets/avatar.webp'
 import paperRocket from '@/assets/paper-rocket.svg'
+import pocketMeinRocket from '@/assets/pocketmeinrocket.mp3'
 import { RocketJourney } from '@/components/scrapbook/RocketJourney'
 import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
@@ -35,6 +36,18 @@ const promptSamples = [
 ]
 
 const buyMeAChaiUrl = import.meta.env.VITE_BUY_ME_A_CHAI_URL ?? 'https://buymeachai.in/cpreet.chawla'
+
+void fetch(pocketMeinRocket, { cache: 'force-cache' })
+
+function playPocketRocket(audio: HTMLAudioElement | null) {
+  if (!audio) return
+
+  audio.pause()
+  audio.currentTime = 0
+  void audio.play().catch(() => {
+    // Browsers may still block playback; the buttons remain usable.
+  })
+}
 
 const processSteps = [
   {
@@ -249,6 +262,11 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   const [isGetItDoneOpen, setIsGetItDoneOpen] = useState(false)
   const screenshotInput = useRef<HTMLInputElement>(null)
   const fileInput = useRef<HTMLInputElement>(null)
+  const pocketRocketRef = useRef<HTMLAudioElement>(null)
+
+  useEffect(() => {
+    pocketRocketRef.current?.load()
+  }, [])
 
   useEffect(() => {
     setIsPromptVisible(true)
@@ -339,6 +357,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   }
 
   function openGetItDone() {
+    playPocketRocket(pocketRocketRef.current)
     if (!getValidatedIntake()) return
 
     setError('')
@@ -347,6 +366,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    playPocketRocket(pocketRocketRef.current)
     await submitIntake('standard')
   }
 
@@ -361,6 +381,14 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
       onSubmit={handleSubmit}
       noValidate
     >
+      <audio
+        ref={pocketRocketRef}
+        src={pocketMeinRocket}
+        preload="auto"
+        className="pointer-events-none absolute h-0 w-0 opacity-0"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
       <div className="mb-2 flex items-baseline justify-between gap-4">
         <label htmlFor="objective" className="text-[15px] font-extrabold sm:text-base">
           What are you trying to get done?
