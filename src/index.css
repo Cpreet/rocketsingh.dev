@@ -217,6 +217,13 @@ p {
     repeating-linear-gradient(0deg, transparent 0 31px, rgb(35 56 79 / 8%) 32px 33px);
 }
 
+/* Masked so the supplied artwork takes the surrounding text colour. */
+.rocketsingh-mark {
+  background-color: currentColor;
+  mask: url("./assets/rocketsingh.svg") center / contain no-repeat;
+  -webkit-mask: url("./assets/rocketsingh.svg") center / contain no-repeat;
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;

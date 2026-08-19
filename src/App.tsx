@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import {
-  ArrowRight,
   Check,
   CheckCircle2,
   CircleDollarSign,
@@ -11,7 +10,6 @@ import {
   MessageCircle,
   Paperclip,
   Sparkles,
-  UserRoundCheck,
   X,
 } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
@@ -121,6 +119,10 @@ export function Logo() {
       <span>rocketsingh.dev</span>
     </a>
   )
+}
+
+export function RocketsinghMark({ className }: { className?: string }) {
+  return <span aria-hidden="true" className={cn('rocketsingh-mark block shrink-0', className)} />
 }
 
 export function PaperRocketIcon({ className }: { className?: string }) {
@@ -791,9 +793,9 @@ function App() {
                 </p>
               </div>
               <a className={cn(buttonVariants({ variant: 'paper', size: 'lg' }), 'w-full lg:w-auto')} href="#ask">
-                <UserRoundCheck className="size-5" aria-hidden="true" />
-                Ask for a human
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <RocketsinghMark className="size-9" />
+                Ask for Rocket Singh
+                <PaperRocketIcon />
               </a>
             </div>
           </section>
