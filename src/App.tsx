@@ -211,6 +211,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   )
   const [email, setEmail] = useState('')
   const [promptIndex, setPromptIndex] = useState(0)
+  const [isPromptVisible, setIsPromptVisible] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const [error, setError] = useState('')
@@ -221,15 +222,25 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   const fileInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    setIsPromptVisible(true)
+
     if (objective || isFocused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return
     }
 
-    const timer = window.setInterval(() => {
-      setPromptIndex((current) => (current + 1) % promptSamples.length)
-    }, 3200)
+    let swapTimer = 0
+    const cycleTimer = window.setInterval(() => {
+      setIsPromptVisible(false)
+      swapTimer = window.setTimeout(() => {
+        setPromptIndex((current) => (current + 1) % promptSamples.length)
+        setIsPromptVisible(true)
+      }, 240)
+    }, 4600)
 
-    return () => window.clearInterval(timer)
+    return () => {
+      window.clearInterval(cycleTimer)
+      window.clearTimeout(swapTimer)
+    }
   }, [isFocused, objective])
 
   function addFiles(selected: FileList | null) {
@@ -321,11 +332,21 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
         </span>
       </div>
 
-      <div className="ruled-field rounded-md">
+      <div className="ruled-field relative rounded-md">
+        <span
+          aria-hidden="true"
+          className={cn(
+            'pointer-events-none absolute inset-x-1 top-1 text-[17px] leading-[34px] font-semibold text-slate-blue/75 transition-[opacity,translate] duration-200 ease-out md:text-lg',
+            objective && 'opacity-0',
+            !objective && isPromptVisible && 'translate-y-0 opacity-100',
+            !objective && !isPromptVisible && '-translate-y-1 opacity-0',
+          )}
+        >
+          {promptSamples[promptIndex]}
+        </span>
         <Textarea
           id="objective"
           value={objective}
-          placeholder={promptSamples[promptIndex]}
           onChange={(event) => {
             setObjective(event.target.value)
             if (error) setError('')
