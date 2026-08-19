@@ -11,35 +11,48 @@ interface DialogProps {
 }
 
 function Dialog({ children, className, labelledBy, onOpenChange, open }: DialogProps) {
-  const dialog = useRef<HTMLDialogElement>(null)
+  const dialog = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const element = dialog.current
-    if (!element) return
+    if (!open) return
 
-    if (open && !element.open) {
-      element.showModal()
-    } else if (!open && element.open) {
-      element.close()
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onOpenChange(false)
     }
-  }, [open])
+
+    dialog.current?.focus()
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      previousFocus?.focus()
+    }
+  }, [onOpenChange, open])
+
+  if (!open) return null
 
   return (
-    <dialog
-      ref={dialog}
-      aria-labelledby={labelledBy}
-      className={cn(
-        'm-auto w-[min(100%-2rem,30rem)] rounded-[16px_24px_18px_22px] border border-ink/15 bg-paper p-0 text-ink shadow-[0_24px_70px_rgba(35,56,79,0.36)] backdrop:bg-navy/55',
-        className,
-      )}
-      onCancel={(event) => {
-        event.preventDefault()
-        onOpenChange(false)
+    <div
+      className="fixed inset-0 z-[100] grid place-items-center bg-navy/55 p-4"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onOpenChange(false)
       }}
-      onClose={() => onOpenChange(false)}
     >
-      {children}
-    </dialog>
+      <div
+        ref={dialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={labelledBy}
+        tabIndex={-1}
+        className={cn(
+          'w-full max-w-[30rem] rounded-[16px_24px_18px_22px] border border-ink/15 bg-paper p-0 text-ink shadow-[0_24px_70px_rgba(35,56,79,0.36)] outline-none',
+          className,
+        )}
+      >
+        {children}
+      </div>
+    </div>
   )
 }
 

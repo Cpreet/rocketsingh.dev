@@ -415,11 +415,14 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           <Paperclip className="size-4" aria-hidden="true" />
           File
         </Button>
+      </div>
+
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <Button
           type="button"
           variant="paper"
           size="lg"
-          className="mt-1 w-full sm:mt-0 sm:ml-auto sm:w-auto"
+          className="w-full border-tan/50 bg-note-amber/60"
           onClick={() => setIsGetItDoneOpen(true)}
           disabled={isSubmitting}
         >
@@ -429,7 +432,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
         <Button
           type="submit"
           size="lg"
-          className="mt-1 w-full sm:mt-0 sm:w-auto"
+          className="w-full"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Making a start…' : 'Get me unstuck'}
