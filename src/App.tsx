@@ -503,8 +503,7 @@ function App() {
             </span>
 
             <div className="relative z-10 max-w-[570px] lg:absolute lg:top-24 lg:left-12">
-              <Stamp>The little question desk on the internet</Stamp>
-              <h1 id="hero-title" className="mt-5 text-[clamp(3.4rem,8.6vw,6.2rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
+              <h1 id="hero-title" className="text-[clamp(3.4rem,8.6vw,6.2rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
                 Got stuck?
                 <br />
                 <span className="scribble">Bring it here.</span>
