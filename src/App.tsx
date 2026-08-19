@@ -508,7 +508,7 @@ function App() {
 
             <IntakeDesk announce={announce} />
 
-            <figure className="absolute top-[100px] left-1/2 z-0 h-[255px] w-[270px] -translate-x-1/2 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] sm:top-[130px] sm:h-[330px] sm:w-[360px] lg:right-12 lg:bottom-[-30px] lg:left-auto lg:h-auto lg:w-[470px] lg:translate-x-0 lg:overflow-visible">
+            <figure className="hidden z-0 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] lg:absolute lg:right-12 lg:bottom-[-30px] lg:block lg:h-auto lg:w-[470px] lg:overflow-visible">
               <span
                 className="absolute top-3 left-1/2 z-10 h-8 w-32 -translate-x-1/2 -rotate-[3deg] bg-tape/70 shadow-[0_2px_3px_rgba(35,56,79,0.1)] sm:w-40 lg:-top-2"
                 aria-hidden="true"
