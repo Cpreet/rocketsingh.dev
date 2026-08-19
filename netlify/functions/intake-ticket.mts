@@ -13,6 +13,7 @@ export default async function intakeTicket(request: Request) {
 
   const objective = input.objective.trim()
   const email = typeof input.email === 'string' ? input.email.trim() : ''
+  const kind = input.kind === 'get-it-done' ? 'get-it-done' : 'standard'
   if (objective.length < 5 || objective.length > maximumObjectiveLength) {
     return json({ error: 'Enter a question between 5 and 500 characters.' }, 400)
   }
@@ -22,7 +23,7 @@ export default async function intakeTicket(request: Request) {
   }
 
   try {
-    const ticket = await createIntakeTicket({ objective, source: input.source, email })
+    const ticket = await createIntakeTicket({ objective, source: input.source, email, kind })
     return json({
       reference: ticket.publicId,
       message: `Your request is on the incoming desk. Reference ${ticket.publicId}.`,
@@ -33,14 +34,20 @@ export default async function intakeTicket(request: Request) {
   }
 }
 
-function isIntakeInput(value: unknown): value is { objective: string; source: IntakeSource; email?: unknown } {
+function isIntakeInput(value: unknown): value is {
+  objective: string
+  source: IntakeSource
+  email?: unknown
+  kind?: unknown
+} {
   return (
     typeof value === 'object' &&
     value !== null &&
     'objective' in value &&
     typeof value.objective === 'string' &&
     'source' in value &&
-    (value.source === 'homepage' || value.source === 'card')
+    (value.source === 'homepage' || value.source === 'card') &&
+    (!('kind' in value) || value.kind === 'standard' || value.kind === 'get-it-done')
   )
 }
 

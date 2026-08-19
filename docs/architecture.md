@@ -10,6 +10,12 @@ Homepage and card UI
   -> Netlify intake function
   -> Kanbn incoming-list card
 
+Get it done CTA
+  -> external Buy Me a Chai page
+  -> customer self-confirmation
+  -> Netlify intake function
+  -> Kanbn incoming-list card with Get it done label
+
 Future API
   -> channel gateway
   -> message normalizer
@@ -18,7 +24,7 @@ Future API
   -> classification / resolution routing
 ```
 
-UI components do not know Kanbn payloads or credentials. The browser calls the typed intake service; the Netlify function owns the external API contract and keeps credentials server-side. A signed Kanbn webhook is acknowledged at a separate function endpoint and intentionally has no persistence or workflow side effects yet.
+UI components do not know Kanbn payloads or credentials. The browser calls the typed intake service; the Netlify function owns the external API contract and keeps credentials server-side. The Get it done CTA renders a QR code for the public Buy Me a Chai page and records only a customer self-confirmation; it must not be presented as verified payment. A signed Kanbn webhook is acknowledged at a separate function endpoint and intentionally has no persistence or workflow side effects yet.
 
 ## Target system shape
 
@@ -82,6 +88,6 @@ The first homepage keeps small, one-off sections together until reuse is demonst
 - explicit access control and auditable operator access;
 - MIME/type/size validation and malware scanning for uploads;
 - evidence and mandatory review rules for high-stakes domains;
-- idempotency for channel webhooks and payments;
+- idempotency for channel webhooks and verified payments;
 - retention and deletion policies before storing real customer content;
 - meaningful product events, avoiding sensitive raw content in analytics.

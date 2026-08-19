@@ -1,6 +1,7 @@
 const defaultKanbnApiBaseUrl = 'https://kanbn.charanpreet.me/api/v1'
 
 export type IntakeSource = 'homepage' | 'card'
+export type IntakeKind = 'standard' | 'get-it-done'
 
 interface KanbnCard {
   publicId: string
@@ -19,6 +20,7 @@ interface KanbnApiConfig {
 
 interface KanbnConfig extends KanbnApiConfig {
   incomingListId: string
+  getItDoneLabelId?: string
 }
 
 export function json(body: unknown, status = 200) {
@@ -54,6 +56,7 @@ export function getKanbnConfig(): KanbnConfig | null {
   return {
     ...apiConfig,
     incomingListId,
+    getItDoneLabelId: process.env.KANBN_GET_IT_DONE_LABEL_ID,
   }
 }
 
@@ -61,6 +64,7 @@ export async function createIntakeTicket(input: {
   objective: string
   source: IntakeSource
   email: string
+  kind: IntakeKind
 }): Promise<KanbnCard> {
   const config = getKanbnConfig()
 
@@ -68,11 +72,20 @@ export async function createIntakeTicket(input: {
     throw new KanbnConfigurationError()
   }
 
-  const title = `New ${input.source === 'card' ? 'card' : 'site'} intake — ${input.objective.slice(0, 120)}`
+  if (input.kind === 'get-it-done' && !config.getItDoneLabelId) {
+    throw new KanbnConfigurationError()
+  }
+
+  const title = input.kind === 'get-it-done'
+    ? `Get it done — ${input.objective.slice(0, 120)}`
+    : `New ${input.source === 'card' ? 'card' : 'site'} intake — ${input.objective.slice(0, 120)}`
   const description = [
     '<p><strong>Source:</strong> rocketsingh.dev ' + input.source + ' intake</p>',
     `<p><strong>Question:</strong><br>${escapeHtml(input.objective).replace(/\n/g, '<br>')}</p>`,
     `<p><strong>Reply email:</strong> <a href="mailto:${escapeHtml(input.email)}">${escapeHtml(input.email)}</a></p>`,
+    input.kind === 'get-it-done'
+      ? '<p><strong>Get it done:</strong> Customer self-confirmed a Buy Me a Chai payment.</p>'
+      : '',
   ].join('')
 
   const response = await kanbnRequest(config, '/cards', {
@@ -81,7 +94,7 @@ export async function createIntakeTicket(input: {
       title,
       description,
       listPublicId: config.incomingListId,
-      labelPublicIds: [],
+      labelPublicIds: input.kind === 'get-it-done' ? [config.getItDoneLabelId!] : [],
       memberPublicIds: [],
       position: 'end',
     }),

@@ -26,7 +26,7 @@ This repository implements the public homepage and an intake boundary for a ques
 - human escalation CTA;
 - deterministic scrapbook design primitives.
 
-The MVP does not persist Cases in this application, upload files, charge payments, or provide an operator dashboard. The question and required reply email entered in the homepage and card intake are sent to the configured private Kanbn incoming list; files remain local until a private upload flow exists. These require backend and policy decisions listed in the implementation plan.
+The MVP does not persist Cases in this application, upload files, charge payments, verify payments, or provide an operator dashboard. The homepage also offers a **Get it done** path that links to an external Buy Me a Chai page and, after the customer self-confirms payment, creates a separately labelled Kanbn request. The question and required reply email entered in the homepage and card intake are sent to the configured private Kanbn incoming list; files remain local until a private upload flow exists. These require backend and policy decisions listed in the implementation plan.
 
 ## Success signal
 

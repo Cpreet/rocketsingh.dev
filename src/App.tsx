@@ -3,6 +3,8 @@ import {
   ArrowRight,
   Check,
   CheckCircle2,
+  CircleDollarSign,
+  ExternalLink,
   ImagePlus,
   Mail,
   MessageCircle,
@@ -11,12 +13,14 @@ import {
   UserRoundCheck,
   X,
 } from 'lucide-react'
+import { QRCodeSVG } from 'qrcode.react'
 
 import avatar from '@/assets/avatar.webp'
 import paperRocket from '@/assets/paper-rocket.svg'
 import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Dialog } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
@@ -29,6 +33,8 @@ const promptSamples = [
   'I need to move my domain without breaking email.',
   'Can you make this spreadsheet usable?',
 ]
+
+const buyMeAChaiUrl = import.meta.env.VITE_BUY_ME_A_CHAI_URL ?? 'https://buymeachai.in/cpreet.chawla'
 
 const processSteps = [
   {
@@ -124,6 +130,77 @@ export function Stamp({ children }: { children: string }) {
   )
 }
 
+interface GetItDoneDialogProps {
+  error: string
+  isSubmitting: boolean
+  onOpenChange: (open: boolean) => void
+  onSubmit: () => void
+  open: boolean
+}
+
+function GetItDoneDialog({ error, isSubmitting, onOpenChange, onSubmit, open }: GetItDoneDialogProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange} labelledBy="get-it-done-title">
+      <div className="paper-tape relative p-5 sm:p-6">
+        <button
+          type="button"
+          className="absolute top-3 right-3 grid size-9 cursor-pointer place-content-center rounded-full text-ink-soft outline-none hover:bg-ink/8 hover:text-ink focus-visible:ring-2 focus-visible:ring-tan"
+          onClick={() => onOpenChange(false)}
+          aria-label="Close Get it done payment dialog"
+          disabled={isSubmitting}
+        >
+          <X className="size-4" aria-hidden="true" />
+        </button>
+
+        <p className="font-mono text-[10px] font-black tracking-[0.15em] text-slate-blue uppercase">
+          Buy me a chai
+        </p>
+        <h2 id="get-it-done-title" className="mt-2 pr-9 text-3xl font-black tracking-[-0.055em] text-ink">
+          Get it done.
+        </h2>
+        <p className="mt-2 max-w-[42ch] text-sm leading-6 font-medium text-ink-soft">
+          Scan to support the desk, then come back here and confirm. We’ll mark your request as Get it done.
+        </p>
+
+        <div className="mt-5 grid place-items-center rounded-[12px_18px_14px_16px] border border-ink/12 bg-white p-4 shadow-[inset_0_0_0_1px_rgba(35,56,79,0.03)]">
+          <QRCodeSVG
+            value={buyMeAChaiUrl}
+            size={196}
+            level="M"
+            includeMargin
+            title="QR code for Buy Me a Chai"
+          />
+        </div>
+
+        <a
+          href={buyMeAChaiUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(buttonVariants({ variant: 'outline', size: 'default' }), 'mt-4 w-full')}
+        >
+          Open Buy Me a Chai
+          <ExternalLink className="size-4" aria-hidden="true" />
+        </a>
+
+        <p className="mt-4 text-xs leading-relaxed text-ink-soft">
+          Payment confirmation is self-reported for now. Your request and reply email must be filled in before we can add it to the desk.
+        </p>
+
+        {error ? (
+          <p className="mt-3 text-sm font-semibold text-error" role="alert">
+            {error}
+          </p>
+        ) : null}
+
+        <Button type="button" size="lg" className="mt-4 w-full" onClick={onSubmit} disabled={isSubmitting}>
+          {isSubmitting ? 'Adding your request…' : 'I’ve paid — get it done'}
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Button>
+      </div>
+    </Dialog>
+  )
+}
+
 interface IntakeDeskProps {
   announce: (message: string) => void
 }
@@ -139,6 +216,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   const [error, setError] = useState('')
   const [receipt, setReceipt] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isGetItDoneOpen, setIsGetItDoneOpen] = useState(false)
   const screenshotInput = useRef<HTMLInputElement>(null)
   const fileInput = useRef<HTMLInputElement>(null)
 
@@ -164,39 +242,49 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
     )
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  function getValidatedIntake() {
     const cleanedObjective = objective.trim()
     const cleanedEmail = email.trim()
 
     if (cleanedObjective.length < 5) {
       setError('Tell us a little more about what you are trying to finish.')
       setReceipt('')
-      return
+      return null
     }
 
     if (!isValidReplyEmail(cleanedEmail)) {
       setError('Enter a valid email address so we can reply.')
       setReceipt('')
-      return
+      return null
     }
+
+    return { cleanedEmail, cleanedObjective }
+  }
+
+  async function submitIntake(kind: 'standard' | 'get-it-done') {
+    const input = getValidatedIntake()
+    if (!input) return
 
     setError('')
     setIsSubmitting(true)
 
     try {
       const result = await kanbnIntakeService.submit({
-        objective: cleanedObjective,
+        objective: input.cleanedObjective,
         source: 'homepage',
-        email: cleanedEmail,
+        email: input.cleanedEmail,
+        kind,
       })
 
       setReceipt(
-        files.length
+        kind === 'get-it-done'
+          ? `${result.message} It is labelled Get it done for the desk.`
+          : files.length
           ? `${result.message} Your staged files have not been sent yet.`
           : result.message,
       )
-      announce('Request added to the incoming desk.')
+      setIsGetItDoneOpen(false)
+      announce(kind === 'get-it-done' ? 'Get it done request added to the incoming desk.' : 'Request added to the incoming desk.')
     } catch (submissionError) {
       setError(
         submissionError instanceof Error
@@ -206,6 +294,11 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    await submitIntake('standard')
   }
 
   function unavailableChannel(channel: string) {
@@ -323,9 +416,20 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           File
         </Button>
         <Button
-          type="submit"
+          type="button"
+          variant="paper"
           size="lg"
           className="mt-1 w-full sm:mt-0 sm:ml-auto sm:w-auto"
+          onClick={() => setIsGetItDoneOpen(true)}
+          disabled={isSubmitting}
+        >
+          Get it done
+          <CircleDollarSign className="size-4" aria-hidden="true" />
+        </Button>
+        <Button
+          type="submit"
+          size="lg"
+          className="mt-1 w-full sm:mt-0 sm:w-auto"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Making a start…' : 'Get me unstuck'}
@@ -357,6 +461,14 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           </button>
         ))}
       </div>
+
+      <GetItDoneDialog
+        open={isGetItDoneOpen}
+        onOpenChange={setIsGetItDoneOpen}
+        onSubmit={() => void submitIntake('get-it-done')}
+        isSubmitting={isSubmitting}
+        error={error}
+      />
     </form>
   )
 }

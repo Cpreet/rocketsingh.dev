@@ -2,6 +2,7 @@ export interface IntakeSubmission {
   objective: string
   source: 'homepage' | 'card'
   email: string
+  kind?: 'standard' | 'get-it-done'
 }
 
 export interface IntakeReceipt {
