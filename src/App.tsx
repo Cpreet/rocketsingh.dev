@@ -215,7 +215,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   return (
     <form
       id="ask"
-      className="paper-tape relative z-20 mx-auto mt-10 w-full max-w-[650px] -rotate-[0.25deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.17)] sm:p-6 lg:absolute lg:bottom-10 lg:left-10 lg:mx-0 lg:mt-0"
+      className="paper-tape relative z-20 mx-auto mt-10 w-full max-w-[650px] -rotate-[0.25deg] rounded-[8px_16px_10px_14px] border border-ink/15 bg-paper p-4 shadow-[6px_9px_18px_rgba(35,56,79,0.1),0_22px_50px_rgba(35,56,79,0.17)] sm:p-6 lg:absolute lg:bottom-[90px] lg:left-10 lg:mx-0 lg:mt-0"
       onSubmit={handleSubmit}
       noValidate
     >
@@ -498,25 +498,17 @@ function App() {
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#eef4fa] sm:h-40" aria-hidden="true" />
 
           <div className="relative z-10 mx-auto w-[min(1300px,calc(100%-24px))] px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-0 lg:pb-28">
-            <span className="absolute top-7 left-5 -rotate-3 font-mono text-[11px] font-black tracking-[0.15em] text-ink-soft/75 sm:left-10 lg:top-14 lg:left-12 lg:text-xs">
-              ASK HERE →
-            </span>
-
             <div className="relative z-10 max-w-[570px] lg:absolute lg:top-24 lg:left-12">
               <h1 id="hero-title" className="text-[clamp(3.4rem,8.6vw,6.2rem)] leading-[0.91] font-black tracking-[-0.075em] text-ink">
                 Got stuck?
                 <br />
                 <span className="scribble">Bring it here.</span>
               </h1>
-              <p className="mt-5 max-w-[510px] text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
-                Tell us what you’re trying to get done. We’ll turn the confusing bit into a clear,
-                practical path you can actually follow.
-              </p>
             </div>
 
             <IntakeDesk announce={announce} />
 
-            <figure className="relative z-0 mx-auto mt-7 h-[255px] w-[270px] overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] sm:h-[330px] sm:w-[360px] lg:absolute lg:right-[-10px] lg:bottom-[-70px] lg:h-auto lg:w-[470px] lg:overflow-visible">
+            <figure className="relative z-0 mx-auto mt-7 h-[255px] w-[270px] overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] sm:h-[330px] sm:w-[360px] lg:absolute lg:right-12 lg:bottom-[-30px] lg:h-auto lg:w-[470px] lg:overflow-visible">
               <span
                 className="absolute top-3 left-1/2 z-10 h-8 w-32 -translate-x-1/2 -rotate-[3deg] bg-tape/70 shadow-[0_2px_3px_rgba(35,56,79,0.1)] sm:w-40 lg:-top-2"
                 aria-hidden="true"
