@@ -60,6 +60,7 @@ export function getKanbnConfig(): KanbnConfig | null {
 export async function createIntakeTicket(input: {
   objective: string
   source: IntakeSource
+  email: string
 }): Promise<KanbnCard> {
   const config = getKanbnConfig()
 
@@ -71,6 +72,7 @@ export async function createIntakeTicket(input: {
   const description = [
     '<p><strong>Source:</strong> rocketsingh.dev ' + input.source + ' intake</p>',
     `<p><strong>Question:</strong><br>${escapeHtml(input.objective).replace(/\n/g, '<br>')}</p>`,
+    `<p><strong>Reply email:</strong> <a href="mailto:${escapeHtml(input.email)}">${escapeHtml(input.email)}</a></p>`,
   ].join('')
 
   const response = await kanbnRequest(config, '/cards', {

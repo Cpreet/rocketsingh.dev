@@ -6,7 +6,7 @@
 - The supplied prototype establishes a strong palette, paper surfaces, tape, ruled inputs, deterministic card rotation, notice-board notes, avatar placement, lightweight toasts, and interactive recipe progress.
 - The original desktop composition overlays the intake and avatar. Mobile must recompose the intake before decorative imagery so the form remains the first useful interaction.
 - The supplied avatar is visually prominent but large; ship an optimized derivative before production.
-- Netlify hosts the static app and a small serverless intake boundary. The current boundary creates text-only Kanbn tickets and accepts signed Kanbn webhooks; it does not persist Cases or webhook events locally.
+- Netlify hosts the static app and a small serverless intake boundary. The current boundary creates Kanbn tickets from a question and required reply email, and accepts signed Kanbn webhooks; it does not persist Cases or webhook events locally.
 
 ## Phases
 
@@ -22,8 +22,8 @@
 
 ## MVP defaults
 
-- The public UI uses a Netlify serverless boundary for text-only Kanbn intake; no Case database, identity, attachment storage, or automated webhook processing exists yet.
-- Anonymous intake is allowed. Text is sent to the configured private Kanbn Incoming list; files are not sent or persisted in this slice.
+- The public UI uses a Netlify serverless boundary for Kanbn intake; no Case database, identity, attachment storage, or automated webhook processing exists yet.
+- Anonymous intake is allowed. The question and required reply email are sent to the configured private Kanbn Incoming list; files are not sent or persisted in this slice.
 - Web is the first channel.
 - External contact links are quiet placeholders until destinations exist.
 - High-risk classification, retention, operator access, recipe generation provider, and verified-resolution rules remain backend decisions.

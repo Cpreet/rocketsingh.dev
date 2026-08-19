@@ -15,7 +15,7 @@ import {
 import paperRocket from '@/assets/paper-rocket.svg'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
-import { kanbnIntakeService } from '@/services/intake'
+import { isValidReplyEmail, kanbnIntakeService } from '@/services/intake'
 
 const resolutionSteps: {
   icon: LucideIcon
@@ -106,6 +106,7 @@ function getContactStarters(objective: string) {
 
 function BusinessCard() {
   const [objective, setObjective] = useState('')
+  const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [receipt, setReceipt] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -114,9 +115,16 @@ function BusinessCard() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const cleanedObjective = objective.trim()
+    const cleanedEmail = email.trim()
 
     if (cleanedObjective.length < 5) {
       setError('Tell us a little more about what you are trying to finish.')
+      setReceipt('')
+      return
+    }
+
+    if (!isValidReplyEmail(cleanedEmail)) {
+      setError('Enter a valid email address so we can reply.')
       setReceipt('')
       return
     }
@@ -125,7 +133,11 @@ function BusinessCard() {
     setIsSubmitting(true)
 
     try {
-      const result = await kanbnIntakeService.submit({ objective: cleanedObjective, source: 'card' })
+      const result = await kanbnIntakeService.submit({
+        objective: cleanedObjective,
+        source: 'card',
+        email: cleanedEmail,
+      })
       setReceipt(result.message)
     } catch (submissionError) {
       setError(
@@ -236,6 +248,33 @@ function BusinessCard() {
               <p className="mt-2 text-[9px] leading-relaxed font-medium text-ink-soft">
                 Start messy. Add screenshots and files at the desk.
               </p>
+            </div>
+
+            <div className="mt-3">
+              <label
+                htmlFor="card-email"
+                className="font-mono text-[9px] font-black tracking-[0.14em] text-ink-soft uppercase"
+              >
+                Email for a reply
+              </label>
+              <input
+                id="card-email"
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value)
+                  if (error) setError('')
+                  if (receipt) setReceipt('')
+                }}
+                placeholder="you@example.com"
+                className="mt-1.5 h-9 w-full rounded-lg border border-ink/15 bg-white/65 px-3 text-[12px] font-semibold text-ink outline-none placeholder:text-slate-blue/70 focus-visible:border-ink/40 focus-visible:ring-2 focus-visible:ring-tan/60"
+                aria-describedby={error ? 'card-objective-error' : undefined}
+                aria-invalid={Boolean(error)}
+              />
+              <p className="mt-1 text-[9px] font-medium text-ink-soft">Only used to follow up on this request.</p>
             </div>
 
             {error ? (

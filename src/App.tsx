@@ -20,7 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { kanbnIntakeService } from '@/services/intake'
+import { isValidReplyEmail, kanbnIntakeService } from '@/services/intake'
 
 const promptSamples = [
   "My printer won't connect to my laptop.",
@@ -132,6 +132,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   const [objective, setObjective] = useState(
     () => new URLSearchParams(window.location.search).get('objective')?.slice(0, 500) ?? '',
   )
+  const [email, setEmail] = useState('')
   const [promptIndex, setPromptIndex] = useState(0)
   const [isFocused, setIsFocused] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -166,9 +167,16 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const cleanedObjective = objective.trim()
+    const cleanedEmail = email.trim()
 
     if (cleanedObjective.length < 5) {
       setError('Tell us a little more about what you are trying to finish.')
+      setReceipt('')
+      return
+    }
+
+    if (!isValidReplyEmail(cleanedEmail)) {
+      setError('Enter a valid email address so we can reply.')
       setReceipt('')
       return
     }
@@ -180,6 +188,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
       const result = await kanbnIntakeService.submit({
         objective: cleanedObjective,
         source: 'homepage',
+        email: cleanedEmail,
       })
 
       setReceipt(
@@ -234,6 +243,30 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           aria-describedby={error ? 'objective-error' : receipt ? 'objective-receipt' : undefined}
           aria-invalid={Boolean(error)}
         />
+      </div>
+
+      <div className="mt-3">
+        <label htmlFor="intake-email" className="text-sm font-extrabold text-ink">
+          Your email <span className="font-medium text-ink-soft">(so we can reply)</span>
+        </label>
+        <input
+          id="intake-email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value)
+            if (error) setError('')
+            if (receipt) setReceipt('')
+          }}
+          placeholder="you@example.com"
+          className="mt-1.5 h-11 w-full rounded-md border border-ink/15 bg-white/65 px-3 text-sm font-medium text-ink outline-none placeholder:text-ink-soft/70 focus-visible:border-slate-blue focus-visible:ring-2 focus-visible:ring-tan/60"
+          aria-describedby={error ? 'objective-error' : undefined}
+          aria-invalid={Boolean(error)}
+        />
+        <p className="mt-1 text-xs font-medium text-ink-soft">Only used to follow up on this request.</p>
       </div>
 
       {error ? (
