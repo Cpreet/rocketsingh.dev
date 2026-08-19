@@ -224,6 +224,42 @@ p {
   -webkit-mask: url("./assets/rocketsingh.svg") center / contain no-repeat;
 }
 
+.rocket-journey {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.rocket-journey[data-ready="true"] {
+  opacity: 1;
+}
+
+.rocket-journey--rocket {
+  z-index: 40;
+}
+
+.rocket-journey__trail-halo {
+  stroke: transparent;
+  stroke-width: 7px;
+  stroke-linecap: round;
+}
+
+.rocket-journey__trail {
+  stroke: rgb(35 56 79 / 72%);
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-dasharray: 2 11;
+}
+
+.rocket-journey__rocket {
+  filter: drop-shadow(1px 3px 3px rgb(35 56 79 / 30%));
+  will-change: transform;
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -252,5 +288,26 @@ p {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .rocket-journey {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .rocket-journey__trail-halo {
+    stroke-width: 6px;
+  }
+
+  .rocket-journey__trail {
+    stroke-width: 2.5px;
+    stroke-dasharray: 2 10;
+  }
+
+  .rocket-journey__rocket image {
+    width: 48px;
+    height: 32px;
+    transform: translate(8px, 5px);
   }
 }

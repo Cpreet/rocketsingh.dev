@@ -16,6 +16,7 @@ import { QRCodeSVG } from 'qrcode.react'
 
 import avatar from '@/assets/avatar.webp'
 import paperRocket from '@/assets/paper-rocket.svg'
+import { RocketJourney } from '@/components/scrapbook/RocketJourney'
 import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -674,18 +675,28 @@ function App() {
         </div>
       </header>
 
-      <main id="top" className="pb-8 sm:pb-12">
-        <section className="hero-panel relative isolate overflow-hidden" aria-labelledby="hero-title">
+      <main id="top" className="relative pb-8 sm:pb-12">
+        <RocketJourney />
+
+        <section
+          className="hero-panel relative overflow-hidden"
+          aria-labelledby="hero-title"
+          data-rocket-anchor="hero"
+        >
           <div className="hero-grid absolute inset-0" aria-hidden="true" />
           <div className="absolute -top-28 -left-20 size-80 rounded-full bg-white/30 blur-3xl" aria-hidden="true" />
           <div className="absolute top-1/4 -right-16 size-[28rem] rounded-full bg-navy/10 blur-3xl" aria-hidden="true" />
           <span className="hero-tick top-6 right-6 hidden lg:block" aria-hidden="true" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#eef4fa] sm:h-40" aria-hidden="true" />
 
-          <div className="relative z-10 mx-auto flex w-[min(1300px,calc(100%-24px))] flex-col px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-12 lg:pt-20 lg:pb-20">
-            <div className="mx-auto flex w-full max-w-[650px] flex-col justify-center lg:mx-0 lg:w-[52%] lg:flex-1">
+          <div className="relative mx-auto flex w-[min(1300px,calc(100%-24px))] flex-col px-4 pt-14 pb-10 sm:w-[min(1300px,calc(100%-48px))] sm:px-8 sm:pt-20 sm:pb-14 lg:min-h-[820px] lg:px-12 lg:pt-20 lg:pb-20">
+            <div className="relative z-50 mx-auto flex w-full max-w-[650px] flex-col justify-center lg:mx-0 lg:w-[52%] lg:flex-1">
               <div className="relative z-10 text-center lg:text-left">
-                <h1 id="hero-title" className="text-[clamp(2.9rem,6.6vw,5.6rem)] leading-[0.94] font-black tracking-[-0.075em] text-ink">
+                <h1
+                  id="hero-title"
+                  className="text-[clamp(2.9rem,6.6vw,5.6rem)] leading-[0.94] font-black tracking-[-0.075em] text-ink"
+                  data-rocket-anchor="hero-title"
+                >
                   Got stuck?
                   <br />
                   <span className="scribble">Bring it here.</span>
@@ -695,7 +706,10 @@ function App() {
               <IntakeDesk announce={announce} />
             </div>
 
-            <figure className="hidden z-0 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] lg:absolute lg:right-12 lg:bottom-[-40px] lg:block lg:h-auto lg:w-[400px] lg:overflow-visible xl:w-[470px] 2xl:w-[500px]">
+            <figure
+              className="hidden z-10 overflow-hidden drop-shadow-[0_20px_18px_rgba(35,56,79,0.18)] lg:absolute lg:right-12 lg:bottom-[-40px] lg:block lg:h-auto lg:w-[400px] lg:overflow-visible xl:w-[470px] 2xl:w-[500px]"
+              data-rocket-anchor="avatar"
+            >
               <span
                 className="absolute top-3 left-1/2 z-10 h-8 w-32 -translate-x-1/2 -rotate-[3deg] bg-tape/70 shadow-[0_2px_3px_rgba(35,56,79,0.1)] sm:w-40 lg:-top-2"
                 aria-hidden="true"
@@ -712,7 +726,10 @@ function App() {
           </div>
         </section>
 
-        <div className="mx-auto w-[min(1180px,calc(100%-20px))] sm:w-[min(1180px,calc(100%-32px))]">
+        <div
+          className="relative z-30 mx-auto w-[min(1180px,calc(100%-20px))] sm:w-[min(1180px,calc(100%-32px))]"
+          data-rocket-content
+        >
           <section id="how" className="scroll-mt-24 pt-20 lg:pt-28">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="max-w-2xl text-[clamp(2.3rem,5vw,4rem)] leading-[0.96] font-black tracking-[-0.06em] text-ink">
@@ -777,7 +794,7 @@ function App() {
 
           <RecipePreview announce={announce} />
 
-          <section className="relative mt-20 overflow-hidden rounded-[24px] bg-ink px-6 py-9 text-white sm:px-10 sm:py-11 lg:mt-28 lg:rounded-[28px] lg:px-12">
+          <section id="handoff" className="relative mt-20 overflow-hidden rounded-[24px] bg-ink px-6 py-9 text-white sm:px-10 sm:py-11 lg:mt-28 lg:rounded-[28px] lg:px-12">
             <div className="absolute -top-32 -right-20 size-80 rounded-full bg-white/5" aria-hidden="true" />
             <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[1fr_auto]">
               <div>
