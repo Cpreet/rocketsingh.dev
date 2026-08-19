@@ -6,6 +6,7 @@ import {
   CircleDollarSign,
   ExternalLink,
   ImagePlus,
+  Loader2,
   Mail,
   MessageCircle,
   Paperclip,
@@ -193,8 +194,17 @@ function GetItDoneDialog({ error, isSubmitting, onOpenChange, onSubmit, open }: 
         ) : null}
 
         <Button type="button" size="lg" className="mt-4 w-full" onClick={onSubmit} disabled={isSubmitting}>
-          {isSubmitting ? 'Adding your request…' : 'I’ve paid — get it done'}
-          <ArrowRight className="size-4" aria-hidden="true" />
+          {isSubmitting ? (
+            <>
+              Adding your request…
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            </>
+          ) : (
+            <>
+              I’ve paid — get it done
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </>
+          )}
         </Button>
       </div>
     </Dialog>
@@ -294,6 +304,8 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           ? `${result.message} Your staged files have not been sent yet.`
           : result.message,
       )
+      setObjective('')
+      setFiles([])
       setIsGetItDoneOpen(false)
       announce(kind === 'get-it-done' ? 'Get it done request added to the incoming desk.' : 'Request added to the incoming desk.')
     } catch (submissionError) {
@@ -305,6 +317,13 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  function openGetItDone() {
+    if (!getValidatedIntake()) return
+
+    setError('')
+    setIsGetItDoneOpen(true)
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -384,13 +403,13 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
       </div>
 
       {error ? (
-        <p id="objective-error" className="mt-2 text-sm font-semibold text-error" role="alert">
+        <p id="objective-error" className="rise-in mt-2 text-sm font-semibold text-error" role="alert">
           {error}
         </p>
       ) : null}
 
       {files.length ? (
-        <ul className="mt-3 flex flex-wrap gap-2" aria-label="Files ready to attach">
+        <ul className="rise-in mt-3 flex flex-wrap gap-2" aria-label="Files ready to attach">
           {files.map((file, index) => (
             <li
               key={`${file.name}-${file.lastModified}`}
@@ -444,7 +463,7 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           variant="paper"
           size="lg"
           className="w-full border-tan/50 bg-note-amber/60"
-          onClick={() => setIsGetItDoneOpen(true)}
+          onClick={openGetItDone}
           disabled={isSubmitting}
         >
           Get it done
@@ -456,15 +475,24 @@ function IntakeDesk({ announce }: IntakeDeskProps) {
           className="w-full"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Making a start…' : 'Get me unstuck'}
-          <ArrowRight className="size-4" aria-hidden="true" />
+          {isSubmitting ? (
+            <>
+              Making a start…
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            </>
+          ) : (
+            <>
+              Get me unstuck
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </>
+          )}
         </Button>
       </div>
 
       {receipt ? (
         <div
           id="objective-receipt"
-          className="mt-4 flex items-start gap-2.5 rounded-lg border border-navy/15 bg-sky-pale/70 p-3 text-sm leading-relaxed text-ink-soft"
+          className="rise-in mt-4 flex items-start gap-2.5 rounded-lg border border-navy/15 bg-sky-pale/70 p-3 text-sm leading-relaxed text-ink-soft"
           role="status"
         >
           <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden="true" />
