@@ -703,7 +703,7 @@ function App() {
         </div>
       </header>
 
-      <main id="top" className="relative pb-8 sm:pb-12">
+      <main id="top" className="relative z-0 pb-8 sm:pb-12">
         <RocketJourney />
 
         <section
